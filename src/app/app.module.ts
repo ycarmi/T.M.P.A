@@ -13,6 +13,8 @@ import { NavigationBarComponent } from './navigation-bar/navigation-bar.componen
 import { HomepageComponent } from './homepage/homepage.component';
 import { LoginComponent } from './login/login.component';
 import { MapComponent } from './map/map.component';
+import { NavigationBarAdminComponent } from './navigation-bar-admin/navigation-bar-admin.component';
+import { NavigationBarProgramManagerComponent } from './navigation-bar-program-manager/navigation-bar-program-manager.component';
 
 const appRoutes: Routes =[
   {path: 'admin', component: AdminComponent},
@@ -31,7 +33,9 @@ const appRoutes: Routes =[
     NavigationBarComponent,
     HomepageComponent,
     LoginComponent,
-    MapComponent
+    MapComponent,
+    NavigationBarAdminComponent,
+    NavigationBarProgramManagerComponent
   ],
   imports: [
     BrowserModule,
