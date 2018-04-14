@@ -15,11 +15,13 @@ import { LoginComponent } from './login/login.component';
 import { MapComponent } from './map/map.component';
 import { NavigationBarAdminComponent } from './navigation-bar-admin/navigation-bar-admin.component';
 import { NavigationBarProgramManagerComponent } from './navigation-bar-program-manager/navigation-bar-program-manager.component';
+import { StreetsComponent } from './streets/streets.component';
 
 const appRoutes: Routes =[
   {path: 'admin', component: AdminComponent},
   {path: '', component: HomepageComponent},
-  {path: 'program-manager', component: ProgramManagerComponent}
+  {path: 'program-manager', component: ProgramManagerComponent},
+  {path: 'streets', component: StreetsComponent}
 ]
 
 @NgModule({
@@ -35,7 +37,8 @@ const appRoutes: Routes =[
     LoginComponent,
     MapComponent,
     NavigationBarAdminComponent,
-    NavigationBarProgramManagerComponent
+    NavigationBarProgramManagerComponent,
+    StreetsComponent
   ],
   imports: [
     BrowserModule,
