@@ -16,6 +16,7 @@ import { MapComponent } from './map/map.component';
 import { NavigationBarAdminComponent } from './navigation-bar-admin/navigation-bar-admin.component';
 import { NavigationBarProgramManagerComponent } from './navigation-bar-program-manager/navigation-bar-program-manager.component';
 import { StreetsComponent } from './streets/streets.component';
+import { EsriMapComponent } from './esri-map/esri-map.component';
 
 const appRoutes: Routes =[
   {path: 'admin', component: AdminComponent},
@@ -38,7 +39,8 @@ const appRoutes: Routes =[
     MapComponent,
     NavigationBarAdminComponent,
     NavigationBarProgramManagerComponent,
-    StreetsComponent
+    StreetsComponent,
+    EsriMapComponent
   ],
   imports: [
     BrowserModule,
