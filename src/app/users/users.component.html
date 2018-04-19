@@ -1,0 +1,191 @@
+<app-navigation-bar-admin></app-navigation-bar-admin> 
+
+<table class="table table-striped">
+  <thead>
+    <th>ID</th>
+    <th>Name</th>
+    <th>Password</th>
+    <th>Registration Data</th>
+    <th>User Type</th>
+  </thead>
+  <tbody>
+    <tr *ngFor="let user of users">
+      <td>{{user.id}} </td>
+      <td>{{user.name}} </td>
+      <td>{{user.password}} </td>
+      <td>{{user.date}} </td>
+      <td>{{user.type}} </td> 
+      <td><button (click)="deleteUser(user)"> Delete </button>
+        <button (click)="UpdateUser(user)"> Edit </button>  </td> 
+    </tr>
+  </tbody>
+  <button (click)="NewUser()"> New User </button> 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    
+
+
+
+
+
+
+
+
+
+</table>

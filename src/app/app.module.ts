@@ -6,23 +6,29 @@ import { FormComponent } from './form/form.component';
 import { CarouselsComponent } from './carousels/carousels.component';
 import { RadioButtonsComponent } from './radio-buttons/radio-buttons.component';
 import { HttpClientModule} from '@angular/common/http';
+import { HttpModule} from '@angular/http';
 import { AdminComponent } from './admin/admin.component';
 import { ProgramManagerComponent } from './program-manager/program-manager.component';
-import{ RouterModule, Routes} from '@angular/router';
+import { RouterModule, Routes} from '@angular/router';
 import { NavigationBarComponent } from './navigation-bar/navigation-bar.component';
 import { HomepageComponent } from './homepage/homepage.component';
 import { LoginComponent } from './login/login.component';
-import { MapComponent } from './map/map.component';
 import { NavigationBarAdminComponent } from './navigation-bar-admin/navigation-bar-admin.component';
 import { NavigationBarProgramManagerComponent } from './navigation-bar-program-manager/navigation-bar-program-manager.component';
 import { StreetsComponent } from './streets/streets.component';
 import { EsriMapComponent } from './esri-map/esri-map.component';
+import { UserCreationComponent } from './user-creation/user-creation.component';
+import { UserService } from './shared-service/user.service';
+import { UsersComponent } from './users/users.component';
+import { FormsModule } from '@angular/forms';
 
 const appRoutes: Routes =[
   {path: 'admin', component: AdminComponent},
   {path: '', component: HomepageComponent},
   {path: 'program-manager', component: ProgramManagerComponent},
-  {path: 'streets', component: StreetsComponent}
+  {path: 'streets', component: StreetsComponent},
+  {path: 'users', component: UsersComponent},
+  {path: 'op', component: UserCreationComponent}
 ]
 
 @NgModule({
@@ -36,20 +42,23 @@ const appRoutes: Routes =[
     NavigationBarComponent,
     HomepageComponent,
     LoginComponent,
-    MapComponent,
     NavigationBarAdminComponent,
     NavigationBarProgramManagerComponent,
     StreetsComponent,
-    EsriMapComponent
+    EsriMapComponent,
+    UserCreationComponent,
+    UsersComponent
   ],
   imports: [
     BrowserModule,
+    FormsModule,
     HttpClientModule,
+    HttpModule,
     MDBBootstrapModule.forRoot(),
     RouterModule.forRoot(appRoutes)
   ],
   schemas: [ NO_ERRORS_SCHEMA ],
-  providers: [],
+  providers: [UserService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

@@ -12,6 +12,8 @@ export class FormComponent implements OnInit {
   serverurl:string = "http://localhost:8080/";
   name:string = '';
   pass:string = '';
+  isProgramManger  = false;
+  isAdmin =false;
   found:boolean;
   radio:string = '';
   
@@ -37,7 +39,7 @@ export class FormComponent implements OnInit {
           password: this.pass
           
           }).subscribe((data:any) => { 
-              if(data == 1 ){
+              if(data > 0 ){
                 this.router.navigate(['admin']);
               }else {
                 // return error massage to the user.
@@ -60,9 +62,11 @@ export class FormComponent implements OnInit {
           }
       }
     )
-
     }
-    
+  }
+  getUser(){
+    var users = this.httpClient.get(this.serverurl+"/GetAllUsers");
+
   }
   /* loginUser(e){
     e.preventDefault();
