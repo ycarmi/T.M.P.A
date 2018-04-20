@@ -1,0 +1,31 @@
+
+.parallax {
+  
+  padding-top: 70px;
+    background-image: url("https://eoimages.gsfc.nasa.gov/images/imagerecords/55000/55167/earth_lights.gif");
+    min-height: 500px; 
+    background-attachment: fixed;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover; 
+    /* -webkit-filter: blur(1px);
+  -moz-filter: blur(1px);
+  -o-filter: blur(1px);
+  -ms-filter: blur(1px);
+  filter: blur(1px);  */
+} 
+
+th{
+    color: white;
+    font-size: 20px;
+    font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+}
+td{
+    color:white;
+    font-size: 20px;
+    font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+    font-weight: bold;
+}
+tr:hover{
+    background-color :black;
+}

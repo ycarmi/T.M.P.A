@@ -3,6 +3,7 @@ import {User} from '../user';
 import {Router} from '@angular/router';
 import {UserService} from '../shared-service/user.service';
 import { IfStmt } from '@angular/compiler';
+import { DatePipe } from '@angular/common';
 @Component({
   selector: 'app-user-creation',
   templateUrl: './user-creation.component.html',
@@ -20,14 +21,14 @@ export class UserCreationComponent implements OnInit {
      if(this.user.id==undefined){
        this._userService.createUser(this.user).subscribe((user)=>{
          console.log(user);
-         this._router.navigate(['/']);
+         this._router.navigate(['/users']);
        },(error)=>{
          console.log(error);
        });
      }else{
       this._userService.updateUser(this.user).subscribe((user)=>{
         console.log(user);
-        this._router.navigate(['/']);
+        this._router.navigate(['/users']);
       },(error)=>{
         console.log(error);
       });

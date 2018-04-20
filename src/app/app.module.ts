@@ -21,14 +21,19 @@ import { UserCreationComponent } from './user-creation/user-creation.component';
 import { UserService } from './shared-service/user.service';
 import { UsersComponent } from './users/users.component';
 import { FormsModule } from '@angular/forms';
+import { DatePipe } from '@angular/common';
+import { StreetsCreationComponent } from './streets-creation/streets-creation.component';
+import { StreetService } from './shared-service/street.service'; 
 
 const appRoutes: Routes =[
   {path: 'admin', component: AdminComponent},
   {path: '', component: HomepageComponent},
   {path: 'program-manager', component: ProgramManagerComponent},
   {path: 'streets', component: StreetsComponent},
+  {path: 'street-creation', component: StreetsCreationComponent},
   {path: 'users', component: UsersComponent},
   {path: 'op', component: UserCreationComponent}
+
 ]
 
 @NgModule({
@@ -47,7 +52,8 @@ const appRoutes: Routes =[
     StreetsComponent,
     EsriMapComponent,
     UserCreationComponent,
-    UsersComponent
+    UsersComponent,
+    StreetsCreationComponent
   ],
   imports: [
     BrowserModule,
@@ -58,7 +64,7 @@ const appRoutes: Routes =[
     RouterModule.forRoot(appRoutes)
   ],
   schemas: [ NO_ERRORS_SCHEMA ],
-  providers: [UserService],
+  providers: [UserService , StreetService ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

@@ -28,15 +28,13 @@ export class UsersComponent implements OnInit {
       console.log("in Users : ");
       console.log(user);
       this.users.splice(this.users.indexOf(user),1);
-
+    },(error)=>{
+      console.log(error)
     });
   }  
-
-
   UpdateUser(user){
     this._userService.setter(user);
     this._router.navigate(['/op']);
-
   }
   NewUser(){
     let user = new User()

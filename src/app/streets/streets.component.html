@@ -1,4 +1,24 @@
-<app-navigation-bar-admin></app-navigation-bar-admin> 
-<p>
-  streets works!
-</p>
+<app-navigation-bar-admin></app-navigation-bar-admin>
+<div class="parallax" >
+  <div class="container">
+    <table class="table table-striped">
+      <thead>
+        <th>Region</th>
+        <th>LocalAuthority</th>
+        <th>Road</th>
+        <th>Road Category</th>
+      </thead>
+      <tbody>
+        <tr *ngFor="let street of streets">
+          <td>{{street.region}} </td>
+          <td>{{street.localAuthority}} </td>
+          <td>{{street.road}} </td>
+          <td>{{street.roadCategory}} </td> 
+          <td><button (click)="deleteStreet(street)"  class="btn btn-outline-danger"> Delete </button>
+            <button (click)="UpdateStreet(street)" class="btn btn-outline-info"> Edit </button>  </td> 
+          </tr>
+        </tbody>
+        <!--button (click)="NewUser()" class="btn btn-outline-warning"> New User </button-->
+      </table>
+    </div>
+</div>

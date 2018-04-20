@@ -1,5 +1,13 @@
 form{
-    background-color: #ffffff;
+  padding-top: 150px;
+  padding-left: 100px;
+  padding-right: 1000px;
+  background: url("https://ga-explorer.netlify.com/wp-content/uploads/2017/01/FESSlideShow6.jpg")no-repeat center center;
+    background-size: cover;
+    height: 100vh;
+    opacity: 1.8;
+
+  /*   background-color: #ffffff;
     border: 1px solid black;
     border-radius: 30px;
     opacity: 0.8;
@@ -7,22 +15,8 @@ form{
     margin-top: 100px;
     padding-top: 300px;
     padding: 7%;
-    filter: alpha(opacity=60); /* For IE8 and earlier */  
-}
-/* #container {
-    position: relative;
-
-  } */
-  form {
-    position: absolute;
+    filter: alpha(opacity=60); */ /* For IE8 and earlier */  
+    /* position: absolute;
     top: 0;
-    left: 0;
+    left: 0; */
   }
-#form.div  {
-      padding: 80%;
-
-  }
-  
- /*  #infoi {
-    z-index: -1;
-  } */

@@ -1,191 +1,27 @@
 <app-navigation-bar-admin></app-navigation-bar-admin> 
-
+<div class="parallax">
+<div class="container">
 <table class="table table-striped">
   <thead>
     <th>ID</th>
-    <th>Name</th>
-    <th>Password</th>
-    <th>Registration Data</th>
+    <th>User Name</th>
+    <!-- <th>Password</th> -->
+    <th>Registration Date</th>
     <th>User Type</th>
   </thead>
   <tbody>
     <tr *ngFor="let user of users">
       <td>{{user.id}} </td>
       <td>{{user.name}} </td>
-      <td>{{user.password}} </td>
+     <!--  <td>{{user.password}} </td> -->
       <td>{{user.date}} </td>
       <td>{{user.type}} </td> 
-      <td><button (click)="deleteUser(user)"> Delete </button>
-        <button (click)="UpdateUser(user)"> Edit </button>  </td> 
+      <td><button (click)="deleteUser(user)"  class="btn btn-outline-danger"> Delete </button>
+        <button (click)="UpdateUser(user)" class="btn btn-outline-info"> Edit </button>  </td> 
     </tr>
   </tbody>
-  <button (click)="NewUser()"> New User </button> 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-    
-
-
-
-
-
-
-
-
-
+<!--   <button (click)="NewUser()" class="btn btn-outline-warning"> New User </button> 
+ -->
 </table>
+</div>
+</div>

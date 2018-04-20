@@ -1,7 +1,7 @@
 <app-navigation-bar-admin></app-navigation-bar-admin>
 
 <form (ngSubmit)= "ProcessForm()" class="view">
-    <p style="color:white" class="h5 text-center mb-4">Create / Update User</p>
+    <p style="color:white" class="h5 text-center mb-4">Create / Update Street</p>
     <!-- <div class="md-form">
         <i class="fa fa-envelope prefix grey-text"></i>
         <input type="text" id="defaultForm-email" name="id" class="form-control"  [(ngModel)]="user.id" mdbActive>
@@ -10,23 +10,27 @@
     <br>
     <br>
     <div class="md-form">
-        
-            <i class="fa fa-user prefix grey-text"></i>      
-            <input type="text" id="defaultForm-pass" name="name" class="form-control" [(ngModel)]="user.name" mdbActive>
-        <label for="defaultForm-pass">User Name</label>
+            <i class="fa fa-map-marker prefix grey-text"></i>   <input type="text" id="defaultForm-pass" name="name" class="form-control" [(ngModel)]="street.region" mdbActive>
+        <label for="defaultForm-pass">Region Name</label>
     </div>
     <div class="md-form">
-        <i class="fa fa-lock prefix grey-text"></i>
-        <input type="text" id="defaultForm-pass" name="password" class="form-control" [(ngModel)]="user.password" mdbActive>
-        <label for="defaultForm-pass">Password</label>
+        <i class="fa fa-location-arrow prefix grey-text"></i>
+        <input type="text" id="defaultForm-pass" name="password" class="form-control" [(ngModel)]="street.localAuthority" mdbActive>
+        <label for="defaultForm-pass">Local Authority</label>
     </div>
     <div class="md-form">
-        <i class="fa fa-id-card prefix grey-text"></i>
-        <input type="text" id="defaultForm-pass" name="type" class="form-control" [(ngModel)]="user.type" mdbActive>
-        <label for="defaultForm-pass">User Type</label>
+        <i class="fa fa-road  prefix grey-text"></i>
+        <input type="text" id="defaultForm-pass" name="type" class="form-control" [(ngModel)]="street.road" mdbActive>
+        <label for="defaultForm-pass">Road</label>
     </div>    
+    <div class="md-form">
+        <i class="fa fa-map-signs  prefix grey-text"></i>
+        <input type="text" id="defaultForm-pass" name="type" class="form-control" [(ngModel)]="street.roadCategory" mdbActive>
+        <label for="defaultForm-pass">Road Category</label>
+    </div>  
 <div class="text-center">
-    <input  type="submit" value="Save" class="btn btn-deep-orange waves-light" mdbRippleRadius>
+        
+    <input  type="submit"  value="Save" class="btn btn-deep-orange waves-light" mdbRippleRadius>
 </div>
 </form>
 <!-- 

@@ -5,22 +5,23 @@ import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/catch';
 import 'rxjs/add/observable/throw';
 import {User} from '../user';
+import {Street} from '../street';
 
 @Injectable()
-export class UserService {
-  private baseUrl: string='http://localhost:8080/Admin';
+export class StreetService {
+  private baseUrl: string='http://localhost:8080/Streets';
   private headers = new Headers ({'Content-Type':'application/json'});
   private options = new RequestOptions ({headers:this.headers});
-  private user: User;
+  private street: Street;
 
   constructor(private _http:Http) { }
 
-  getUsers(){
-    return this._http.get(this.baseUrl+ '/GetAllUsers' , this.options)
+  getStreets(){
+    return this._http.get(this.baseUrl , this.options)
     .map((response:Response)=>response.json()).catch(this.errorHandler);
 
   }
-  getUser(id: Number){
+  /* getUser(id: Number){
     return this._http.get(this.baseUrl+ '/' + id , this.options).map((response:Response)=> response.json())
     .catch(this.errorHandler);
 
@@ -37,47 +38,32 @@ export class UserService {
       return this._http.delete(this.baseUrl+'/DeleteManger/' + user.id , this.options).map((response:Response)=> response.json())
     .catch(this.errorHandler);
     }
-  }
+  } */
   /* deleteUserProgramManager(id:Number){
     return this._http.delete('http://localhost:8080/ProgramManger/' + id , this.options).map((response:Response)=> response.json())
     .catch(this.errorHandler);
 
   } */
-  createUser( user:User){
-    console.log(user);
-    if(this.user.type=="Admin")
-    {
-    return this._http.post(this.baseUrl+ '/SaveAdmin', JSON.stringify(user), this.options).map((response:Response)=> response.json())
+  createStreet( street:Street){
+    console.log(street);
+    return this._http.post(this.baseUrl+ 'Upload/SaveDetails', JSON.stringify(street), this.options).map((response:Response)=> response.json())
     .catch(this.errorHandler);
     }
-    else
-    {
-      return this._http.post(this.baseUrl+ '/SaveManger', JSON.stringify(user), this.options).map((response:Response)=> response.json())
+    //lazem nzabeet hada el eshi kaman 
+  updateStreet( street: Street){
+    
+    return this._http.put(this.baseUrl+ '/UpdateAdmin', JSON.stringify(street), this.options).map((response:Response)=> response.json())
     .catch(this.errorHandler);
     }
-  } 
-  updateUser( user:User){
-    if(this.user.type=="Admin")
-    {
-    return this._http.put(this.baseUrl+ '/UpdateAdmin', JSON.stringify(user), this.options).map((response:Response)=> response.json())
-    .catch(this.errorHandler);
-    }
-    else
-    {
-      return this._http.put(this.baseUrl+ '/UpdateManger', JSON.stringify(user), this.options).map((response:Response)=> response.json())
-    .catch(this.errorHandler);
-    }
-
-  }
   errorHandler(error:Response){
 
     return Observable.throw(error||"SERVER ERROR");
 
   }
-  setter(user:User){
-    this.user=user;
+  setter(street:Street){
+    this.street=street;
   }
   getter(){
-    return this.user;
+    return this.street;
   }
 }
