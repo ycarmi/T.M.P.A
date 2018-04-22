@@ -2,6 +2,10 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { StreetService} from '../shared-service/street.service';
 import { Street} from '../street';
+import { DataTablesModule } from 'angular-datatables';
+
+import { Http, Response } from '@angular/http';
+import { Subject } from 'rxjs/Subject';
 
 @Component({
   selector: 'app-streets',
@@ -9,13 +13,22 @@ import { Street} from '../street';
   styleUrls: ['./streets.component.scss']
 })
 export class StreetsComponent implements OnInit {
-  private streets:Street[];
-  constructor(private _streetService:StreetService, private _router:Router ) { }
-
-  ngOnInit() {
+  
+  private streets:any[];
+  dtOptions: DataTables.Settings = {};
+  dtTrigger: Subject<any> = new Subject();
+  
+  constructor(private _streetService:StreetService, private _router:Router, private http: Http ) { }
+  
+  ngOnInit(): void {
+    this.dtOptions = {
+      pagingType: 'full_numbers',
+      pageLength: 10
+    };
       this._streetService.getStreets().subscribe((Streets)=>{
       console.log(Streets);
       this.streets=Streets;
+      this.dtTrigger.next();
     }, (error)=>{
       console.log(error);
     })

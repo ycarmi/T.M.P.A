@@ -22,15 +22,17 @@ import { UserService } from './shared-service/user.service';
 import { UsersComponent } from './users/users.component';
 import { FormsModule } from '@angular/forms';
 import { DatePipe } from '@angular/common';
-import { StreetsCreationComponent } from './streets-creation/streets-creation.component';
+import { StreetCreationComponent } from './street-creation/street-creation.component';
 import { StreetService } from './shared-service/street.service'; 
+import { DataTablesModule } from 'angular-datatables';
+
 
 const appRoutes: Routes =[
   {path: 'admin', component: AdminComponent},
   {path: '', component: HomepageComponent},
   {path: 'program-manager', component: ProgramManagerComponent},
   {path: 'streets', component: StreetsComponent},
-  {path: 'street-creation', component: StreetsCreationComponent},
+  {path: 'street-creation', component: StreetCreationComponent},
   {path: 'users', component: UsersComponent},
   {path: 'op', component: UserCreationComponent}
 
@@ -53,7 +55,7 @@ const appRoutes: Routes =[
     EsriMapComponent,
     UserCreationComponent,
     UsersComponent,
-    StreetsCreationComponent
+    StreetCreationComponent
   ],
   imports: [
     BrowserModule,
@@ -61,7 +63,9 @@ const appRoutes: Routes =[
     HttpClientModule,
     HttpModule,
     MDBBootstrapModule.forRoot(),
-    RouterModule.forRoot(appRoutes)
+    RouterModule.forRoot(appRoutes),
+    DataTablesModule
+
   ],
   schemas: [ NO_ERRORS_SCHEMA ],
   providers: [UserService , StreetService ],

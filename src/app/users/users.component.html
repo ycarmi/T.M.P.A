@@ -1,13 +1,16 @@
 <app-navigation-bar-admin></app-navigation-bar-admin> 
-<div class="parallax">
+ <div class="parallax">
 <div class="container">
-<table class="table table-striped">
+<table datatable [dtOptions]="dtOptions" [dtTrigger]="dtTrigger" class="row-border hover">
   <thead>
+    <tr>
     <th>ID</th>
     <th>User Name</th>
     <!-- <th>Password</th> -->
     <th>Registration Date</th>
     <th>User Type</th>
+    <th>Change Formate</th>
+    </tr>
   </thead>
   <tbody>
     <tr *ngFor="let user of users">

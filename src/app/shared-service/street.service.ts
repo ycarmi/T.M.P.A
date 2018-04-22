@@ -19,8 +19,8 @@ export class StreetService {
   getStreets(){
     return this._http.get(this.baseUrl , this.options)
     .map((response:Response)=>response.json()).catch(this.errorHandler);
-
   }
+  
   /* getUser(id: Number){
     return this._http.get(this.baseUrl+ '/' + id , this.options).map((response:Response)=> response.json())
     .catch(this.errorHandler);
