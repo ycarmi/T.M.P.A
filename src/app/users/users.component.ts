@@ -23,13 +23,13 @@ export class UsersComponent implements OnInit {
       pagingType: 'full_numbers',
       pageLength: 10
     };
-      this._userService.getUsers().subscribe((GetAllUsers)=>{
+       this._userService.getUsers().subscribe((GetAllUsers)=>{
       console.log(GetAllUsers);
       this.users=GetAllUsers;
       this.dtTrigger.next();
     }, (error)=>{
       console.log(error);
-    })
+    }) 
   }
   deleteUser(user){
     //if admin

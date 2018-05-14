@@ -34,7 +34,7 @@ export class UserService {
     }
     else
     {
-      return this._http.delete(this.baseUrl+'/DeleteManger/' + user.id , this.options).map((response:Response)=> response.json())
+      return this._http.delete(this.baseUrl+'/DeleteManager/' + user.id , this.options).map((response:Response)=> response.json())
     .catch(this.errorHandler);
     }
   }
@@ -52,7 +52,7 @@ export class UserService {
     }
     else
     {
-      return this._http.post(this.baseUrl+ '/SaveManger', JSON.stringify(user), this.options).map((response:Response)=> response.json())
+      return this._http.post(this.baseUrl+ '/SaveManager', JSON.stringify(user), this.options).map((response:Response)=> response.json())
     .catch(this.errorHandler);
     }
   } 
@@ -64,7 +64,7 @@ export class UserService {
     }
     else
     {
-      return this._http.put(this.baseUrl+ '/UpdateManger', JSON.stringify(user), this.options).map((response:Response)=> response.json())
+      return this._http.put(this.baseUrl+ '/UpdateManager', JSON.stringify(user), this.options).map((response:Response)=> response.json())
     .catch(this.errorHandler);
     }
 

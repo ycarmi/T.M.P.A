@@ -12,7 +12,6 @@ import { ProgramManagerComponent } from './program-manager/program-manager.compo
 import { RouterModule, Routes} from '@angular/router';
 import { NavigationBarComponent } from './navigation-bar/navigation-bar.component';
 import { HomepageComponent } from './homepage/homepage.component';
-import { LoginComponent } from './login/login.component';
 import { NavigationBarAdminComponent } from './navigation-bar-admin/navigation-bar-admin.component';
 import { NavigationBarProgramManagerComponent } from './navigation-bar-program-manager/navigation-bar-program-manager.component';
 import { StreetsComponent } from './streets/streets.component';
@@ -23,7 +22,9 @@ import { UsersComponent } from './users/users.component';
 import { FormsModule } from '@angular/forms';
 import { DatePipe } from '@angular/common';
 import { StreetCreationComponent } from './street-creation/street-creation.component';
+
 import { StreetService } from './shared-service/street.service'; 
+import { StreetPointsService } from './shared-service/street-points.service';
 import { DataTablesModule } from 'angular-datatables';
 
 
@@ -48,7 +49,6 @@ const appRoutes: Routes =[
     ProgramManagerComponent,
     NavigationBarComponent,
     HomepageComponent,
-    LoginComponent,
     NavigationBarAdminComponent,
     NavigationBarProgramManagerComponent,
     StreetsComponent,
@@ -68,7 +68,7 @@ const appRoutes: Routes =[
 
   ],
   schemas: [ NO_ERRORS_SCHEMA ],
-  providers: [UserService , StreetService ],
+  providers: [UserService , StreetService, StreetPointsService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

@@ -12,7 +12,7 @@ export class FormComponent implements OnInit {
   serverurl:string = "http://localhost:8080/";
   name:string = '';
   pass:string = '';
-  isProgramManger  = false;
+  isProgramManager  = false;
   isAdmin =false;
   found:boolean;
   radio:string = '';
@@ -39,6 +39,7 @@ export class FormComponent implements OnInit {
           password: this.pass
           
           }).subscribe((data:any) => { 
+            console.log(data)
               if(data > 0 ){
                 this.router.navigate(['admin']);
               }else {
@@ -48,14 +49,16 @@ export class FormComponent implements OnInit {
         )
     }
     
-    else if (this.radio = "ProgramManger"){
-      this.httpClient.post(this.serverurl+`ProgramManger/Login`,
+    else if (this.radio = "ProgramManager"){
+      this.httpClient.post(this.serverurl+`ProgramManager/Login`,
       {
       name:this.name,
       password: this.pass
       
       }).subscribe((data:any) => { 
-          if(data == 1 ){
+        console.log(data)
+
+          if(data > 0 ){
             this.router.navigate(['program-manager']);
           }else {
             // return error massage to the user.
