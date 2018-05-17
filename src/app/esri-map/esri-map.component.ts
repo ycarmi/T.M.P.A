@@ -33,6 +33,27 @@ export class EsriMapComponent implements OnInit {
   private _basemap = 'streets';
   private pointsCorrdinates = [];
 
+   redPointsCorrdinates=[];
+   yellowPointsCorrdinates=[];
+   orangePointsCorrdinates=[];
+   redPoints = { type: "multipoint", points :this.redPointsCorrdinates};
+   orangePoints ={ type : "multipoint", points : this.orangePointsCorrdinates};
+   yellowPoints ={ type : "multipoint", points : this.yellowPointsCorrdinates};
+   redMarkerSymbol = { type: "simple-marker", color: "red"};
+   orangeMarketSymbol = { type : "simple-marker", color : "orange"};
+   yellowMarkerSymbol = { type : "simple-marker", color : "yellow"};
+   lineAtt = { Name: "Keystone Pipeline",Owner: "TransCanada",Length: "3,456 km" };
+
+   renderer = {
+    type: "simple", // autocasts as new SimpleRenderer()
+    symbol: {
+      type: "simple-line", // autocasts as new SimpleLineSymbol()
+      color: [255, 255, 255, 0.5],
+      width: 0.75,
+      style: "long-dash-dot-dot"
+    }
+  };
+
   @Input()
   set zoom(zoom: number) {
     this._zoom = zoom;
@@ -68,23 +89,35 @@ export class EsriMapComponent implements OnInit {
 
   constructor(private _streetpointsservice:StreetPointsService) { }
 
+  separatePointsColors(){
 
-/*   .subscribe((points)=>{
-    points.forEach(element => {
-      var pointCorrdinate = [];
-      pointCorrdinate.push(element.point.longitude);
-      pointCorrdinate.push(element.point.latitude);
-      pointsCorrdinates.push(pointCorrdinate);
-     });
-     this.pointsCorrdinates = pointsCorrdinates;
- 
-  }, (error)=>{
-    console.log(error);
-    return [[]];
-  })*/
-
-
-
+    this._streetpointsservice.getStreetPoints().subscribe((jsonpoints)=>{
+           
+      jsonpoints.forEach(element => {
+        var pointCorrdinate = [];
+        var statuses = element.statusOverTime;
+                     
+        var status = statuses[statuses.length-1].trafficStatus;
+        
+          pointCorrdinate.push(element.point.longitude);
+          pointCorrdinate.push(element.point.latitude);
+        
+        if(status == 4){
+          this.redPointsCorrdinates.push(pointCorrdinate);
+        }else if(status == 3){
+          this.orangePointsCorrdinates.push(pointCorrdinate);
+        }else if(status == 2){
+          this.yellowPointsCorrdinates.push(pointCorrdinate);
+        }
+       
+      });
+       console.log(this.redPointsCorrdinates)
+      console.log(this.orangePointsCorrdinates)
+      console.log(this.yellowPointsCorrdinates) 
+  }, err => {
+    console.error(err);
+  });
+}
   public ngOnInit() {
          // First create a line geometry (this is the Keystone pipeline)
 
@@ -93,10 +126,12 @@ export class EsriMapComponent implements OnInit {
       'esri/views/MapView',
       "esri/Graphic",
       "esri/widgets/Search",
+      "esri/layers/MapImageLayer",
+      "dojo/on",
       "dojo/domReady!"
      
     ])
-      .then(([ EsriMap, EsriMapView, Graphic,Search]) => {
+      .then(([ EsriMap, EsriMapView, Graphic,Search, MapImageLayer,on]) => {
 
         // Set type for Map constructor properties
         const mapProperties: esri.MapProperties = {
@@ -112,77 +147,16 @@ export class EsriMapComponent implements OnInit {
           zoom: this._zoom,
           map: map
         };
+        
+        this.separatePointsColors();
+
         let mapView: esri.MapView = new EsriMapView(mapViewProperties);
       
-
-
-
-        this._streetpointsservice.getStreetPoints().subscribe((jsonpoints)=>{
-          var redPointsCorrdinates = [];
-          var orangePointsCorrdinates =[];
-          var yellowPointsCorrdinates = [];    
-            jsonpoints.forEach(element => {
-              var pointCorrdinate = [];
-              var statuses = element.statusOverTime;
-                           
-              var status = statuses[statuses.length-1].trafficStatus;
-              
-                pointCorrdinate.push(element.point.longitude);
-                pointCorrdinate.push(element.point.latitude);
-              
-              if(status == 4){
-                redPointsCorrdinates.push(pointCorrdinate);
-              }else if(status == 3){
-                orangePointsCorrdinates.push(pointCorrdinate);
-              }else if(status == 2){
-                yellowPointsCorrdinates.push(pointCorrdinate);
-              }
-             
-            });
-            console.log(redPointsCorrdinates)
-            console.log(orangePointsCorrdinates)
-            console.log(redPointsCorrdinates)
-                  var redPoints = {
-                    type: "multipoint",
-                    points :redPointsCorrdinates,
-                    width: 5,
-                    height: 5, 
-                    depth: 5
-                  }
-                  var orangePoints ={
-                    type : "multipoint",
-                    points : orangePointsCorrdinates
-                  }
-                  var yellowPoints ={
-                    type : "multipoint",
-                    points : yellowPointsCorrdinates
-                  }
-                   // Create a symbol for drawing the point
-                   var redMarkerSymbol = {
-                    type: "simple-marker",  // autocasts as new SimpleMarkerSymbol()
-                    color: "red",
-                   
-
-                  };
-                  var orangeMarketSymbol = {
-                    type : "simple-marker",
-                    color : "orange"
-                  }
-                  var yellowMarkerSymbol = {
-                    type : "simple-marker",
-                    color : "yellow"
-                  }
-                  var lineAtt = {
-                    Name: "Keystone Pipeline",  // The name of the pipeline
-                    Owner: "TransCanada",  // The owner of the pipeline
-                    Length: "3,456 km"  // The length of the pipeline
-                  };
-          
                   // Create a graphic and add the geometry and symbol to it
             var redPointsGraphic = new Graphic({
-              geometry:redPoints,
-              symbol : redMarkerSymbol,
-              attributes : lineAtt,
+              geometry:this.redPoints,
+              symbol : this.redMarkerSymbol,
+              attributes : this.lineAtt,
               popupTemplate: {
                 title: "{Name}",
                 content: [{
@@ -198,9 +172,9 @@ export class EsriMapComponent implements OnInit {
               }
             })
             var orangePointsGraphic = new Graphic({
-              geometry:orangePoints,
-              symbol : orangeMarketSymbol,
-              attributes : lineAtt,
+              geometry:this.orangePoints,
+              symbol : this.orangeMarketSymbol,
+              attributes : this.lineAtt,
               popupTemplate: {
                 title: "{Name}",
                 content: [{
@@ -216,9 +190,9 @@ export class EsriMapComponent implements OnInit {
               }
             })
             var yellowPointsGraphic = new Graphic({
-              geometry:yellowPoints,
-              symbol : yellowMarkerSymbol,
-              attributes : lineAtt,
+              geometry:this.yellowPoints,
+              symbol : this.yellowMarkerSymbol,
+              attributes : this.lineAtt,
               popupTemplate: {
                 title: "{Name}",
                 content: [{
@@ -244,18 +218,13 @@ export class EsriMapComponent implements OnInit {
             mapView.when(() => {
               this.mapLoaded.emit(true);
               
-            }, err => {
-              console.error(err);
-            });
+            })
+          })
+        }
+      }
 
-            }) // end of subscribe
-      
-        
-      })
-      .catch(err => {
-        console.error(err);
-      });
-      
+     
+    
+    
+  
 
-  } // ngOnInit
-}
