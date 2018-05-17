@@ -16,6 +16,8 @@ import { loadModules } from 'esri-loader';
 import esri = __esri;
 import { StreetPoints } from '../street-points';
 import { StreetPointsService } from '../shared-service/street-points.service';
+import axios from 'axios' 
+
 
 @Component({
   selector: 'app-esri-map',
@@ -62,6 +64,7 @@ export class EsriMapComponent implements OnInit {
 
   // this is needed to be able to create the MapView at the DOM element in this component
   @ViewChild('mapViewNode') private mapViewEl: ElementRef;
+  
 
   constructor(private _streetpointsservice:StreetPointsService) { }
 
@@ -85,16 +88,15 @@ export class EsriMapComponent implements OnInit {
   public ngOnInit() {
          // First create a line geometry (this is the Keystone pipeline)
 
-
-
     loadModules([
       'esri/Map',
       'esri/views/MapView',
       "esri/Graphic",
+      "esri/widgets/Search",
       "dojo/domReady!"
      
     ])
-      .then(([ EsriMap, EsriMapView, Graphic]) => {
+      .then(([ EsriMap, EsriMapView, Graphic,Search]) => {
 
         // Set type for Map constructor properties
         const mapProperties: esri.MapProperties = {
@@ -111,9 +113,10 @@ export class EsriMapComponent implements OnInit {
           map: map
         };
         let mapView: esri.MapView = new EsriMapView(mapViewProperties);
+      
 
-        
-       
+
+
         this._streetpointsservice.getStreetPoints().subscribe((jsonpoints)=>{
           var redPointsCorrdinates = [];
           var orangePointsCorrdinates =[];
@@ -232,13 +235,20 @@ export class EsriMapComponent implements OnInit {
             })
 
             mapView.graphics.addMany([redPointsGraphic,orangePointsGraphic,yellowPointsGraphic]);
+            const searchWidget = new Search({
+              view: mapView
+              
+              });
+              mapView.ui.add(searchWidget,'top-right'); 
+
             mapView.when(() => {
               this.mapLoaded.emit(true);
               
             }, err => {
               console.error(err);
             });
-            })
+
+            }) // end of subscribe
       
         
       })
