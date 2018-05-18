@@ -1,3 +1,4 @@
+import { Observable } from 'rxjs/Observable';
 /*
   Copyright 2018 Esri
   Licensed under the Apache License, Version 2.0 (the "License");
@@ -32,18 +33,19 @@ export class EsriMapComponent implements OnInit {
   private _center = [-2.013236813, 52.57441986];
   private _basemap = 'streets';
   private pointsCorrdinates = [];
-
-   redPointsCorrdinates=[];
-   yellowPointsCorrdinates=[];
-   orangePointsCorrdinates=[];
-   redPoints = { type: "multipoint", points :this.redPointsCorrdinates};
-   orangePoints ={ type : "multipoint", points : this.orangePointsCorrdinates};
-   yellowPoints ={ type : "multipoint", points : this.yellowPointsCorrdinates};
-   redMarkerSymbol = { type: "simple-marker", color: "red"};
-   orangeMarketSymbol = { type : "simple-marker", color : "orange"};
-   yellowMarkerSymbol = { type : "simple-marker", color : "yellow"};
-   lineAtt = { Name: "Keystone Pipeline",Owner: "TransCanada",Length: "3,456 km" };
-
+  redPointsGraphic;
+  yellowPointsGraphic;
+  orangePointsGraphic;
+  redPoints =  { type: "multipoint",points :[]};
+  orangePoints = { type: "multipoint",points :[]};
+  yellowPoints= { type: "multipoint",points :[]};
+  redPointsCorrdinates=[];
+  yellowPointsCorrdinates=[];
+  orangePointsCorrdinates=[];
+  redMarkerSymbol = { type: "simple-marker", color: "red"};
+  orangeMarketSymbol = { type : "simple-marker", color : "orange"};
+  yellowMarkerSymbol = { type : "simple-marker", color : "yellow"};
+  lineAtt = { Name: "Keystone Pipeline",Owner: "TransCanada",Length: "3,456 km" };
    renderer = {
     type: "simple", // autocasts as new SimpleRenderer()
     symbol: {
@@ -53,7 +55,94 @@ export class EsriMapComponent implements OnInit {
       style: "long-dash-dot-dot"
     }
   };
+  async setYellowGraphic(){
+    await loadModules([
+      'esri/Graphic',"dojo/domReady!"
+    ])
+      .then(([Graphic]) => {
+        this.yellowPointsGraphic = new Graphic({
+          geometry:this.yellowPoints,
+          symbol : this.yellowMarkerSymbol,
+          attributes : this.lineAtt,
+          popupTemplate: {
+            title: "{Name}",
+            content: [{
+              type: "fields",
+              fieldInfos: [{
+                fieldName: "Name"
+              }, {
+                fieldName: "Owner"
+              }, {
+                fieldName: "Length"
+              }]
+            }]
+          }
+        })
+       
+      })
+      .catch(err => {
+        console.error(err);
+      });
+  }
 
+
+  async setOrangeGraphic(){
+    await loadModules([
+      'esri/Graphic',"dojo/domReady!"
+    ])
+      .then(([Graphic]) => {
+        this.orangePointsGraphic = new Graphic({
+          geometry:this.orangePoints,
+          symbol : this.orangeMarketSymbol,
+          attributes : this.lineAtt,
+          popupTemplate: {
+            title: "{Name}",
+            content: [{
+              type: "fields",
+              fieldInfos: [{
+                fieldName: "Name"
+              }, {
+                fieldName: "Owner"
+              }, {
+                fieldName: "Length"
+              }]
+            }]
+          }
+        })
+      })
+      .catch(err => {
+        console.error(err);
+      });
+  }
+
+   async setRedGraphic(){
+    await loadModules([
+      'esri/Graphic',"dojo/domReady!"
+    ])
+      .then(([Graphic]) => {
+        this.redPointsGraphic =  new Graphic({
+          geometry:this.redPoints,
+              symbol : this.redMarkerSymbol,
+              attributes : this.lineAtt,
+              popupTemplate: {
+                title: "{Name}",
+                    content: [{
+                      type: "fields",
+                      fieldInfos: [{
+                        fieldName: "Name"
+                      }, {
+                        fieldName: "Owner"
+                      }, {
+                        fieldName: "Length"
+                      }]
+                    }]
+                  }
+              })
+      })
+      .catch(err => {
+        console.error(err);
+      });
+  }
   @Input()
   set zoom(zoom: number) {
     this._zoom = zoom;
@@ -89,35 +178,33 @@ export class EsriMapComponent implements OnInit {
 
   constructor(private _streetpointsservice:StreetPointsService) { }
 
-  separatePointsColors(){
+ 
 
-    this._streetpointsservice.getStreetPoints().subscribe((jsonpoints)=>{
-           
-      jsonpoints.forEach(element => {
-        var pointCorrdinate = [];
-        var statuses = element.statusOverTime;
-                     
-        var status = statuses[statuses.length-1].trafficStatus;
-        
-          pointCorrdinate.push(element.point.longitude);
-          pointCorrdinate.push(element.point.latitude);
-        
-        if(status == 4){
-          this.redPointsCorrdinates.push(pointCorrdinate);
-        }else if(status == 3){
-          this.orangePointsCorrdinates.push(pointCorrdinate);
-        }else if(status == 2){
-          this.yellowPointsCorrdinates.push(pointCorrdinate);
-        }
-       
-      });
-       console.log(this.redPointsCorrdinates)
-      console.log(this.orangePointsCorrdinates)
-      console.log(this.yellowPointsCorrdinates) 
-  }, err => {
-    console.error(err);
-  });
+
+ subscribeToObs(jsonpoints) {
+    jsonpoints.forEach(element => {
+     var pointCorrdinate = [];
+     var statuses = element.statusOverTime;
+     var status = statuses[statuses.length-1].trafficStatus;
+     pointCorrdinate.push(element.point.longitude);
+     pointCorrdinate.push(element.point.latitude);
+     if(status == 4){
+       this.redPointsCorrdinates.push(pointCorrdinate);
+     }else if(status == 3){
+       this.orangePointsCorrdinates.push(pointCorrdinate);
+     }else if(status == 2){
+       this.yellowPointsCorrdinates.push(pointCorrdinate);
+     }
+   });
+   this.redPoints.points =    this.redPointsCorrdinates;
+   this.orangePoints.points =  this.orangePointsCorrdinates;
+   this.yellowPoints.points = this.yellowPointsCorrdinates;
 }
+ async foo() {
+  let res = await  this._streetpointsservice.getStreetPoints();
+  this.subscribeToObs(res);
+}
+
   public ngOnInit() {
          // First create a line geometry (this is the Keystone pipeline)
 
@@ -148,77 +235,26 @@ export class EsriMapComponent implements OnInit {
           map: map
         };
         
-        this.separatePointsColors();
 
         let mapView: esri.MapView = new EsriMapView(mapViewProperties);
-      
-                  // Create a graphic and add the geometry and symbol to it
-            var redPointsGraphic = new Graphic({
-              geometry:this.redPoints,
-              symbol : this.redMarkerSymbol,
-              attributes : this.lineAtt,
-              popupTemplate: {
-                title: "{Name}",
-                content: [{
-                  type: "fields",
-                  fieldInfos: [{
-                    fieldName: "Name"
-                  }, {
-                    fieldName: "Owner"
-                  }, {
-                    fieldName: "Length"
-                  }]
-                }]
-              }
-            })
-            var orangePointsGraphic = new Graphic({
-              geometry:this.orangePoints,
-              symbol : this.orangeMarketSymbol,
-              attributes : this.lineAtt,
-              popupTemplate: {
-                title: "{Name}",
-                content: [{
-                  type: "fields",
-                  fieldInfos: [{
-                    fieldName: "Name"
-                  }, {
-                    fieldName: "Owner"
-                  }, {
-                    fieldName: "Length"
-                  }]
-                }]
-              }
-            })
-            var yellowPointsGraphic = new Graphic({
-              geometry:this.yellowPoints,
-              symbol : this.yellowMarkerSymbol,
-              attributes : this.lineAtt,
-              popupTemplate: {
-                title: "{Name}",
-                content: [{
-                  type: "fields",
-                  fieldInfos: [{
-                    fieldName: "Name"
-                  }, {
-                    fieldName: "Owner"
-                  }, {
-                    fieldName: "Length"
-                  }]
-                }]
-              }
-            })
+        const searchWidget = new Search({
+          view: mapView
+          
+        });
+        mapView.ui.add(searchWidget,'top-right'); 
+        this.foo().then(() =>{         
+        Promise.all([this.setOrangeGraphic(),this.setYellowGraphic(),this.setRedGraphic()])
+               .then(() =>{
+                mapView.graphics
+                .addMany([this.redPointsGraphic,this.orangePointsGraphic,this.yellowPointsGraphic]);
+                mapView.when(() => {
+                 this.mapLoaded.emit(true);
+               })   
+              })
 
-            mapView.graphics.addMany([redPointsGraphic,orangePointsGraphic,yellowPointsGraphic]);
-            const searchWidget = new Search({
-              view: mapView
-              
-              });
-              mapView.ui.add(searchWidget,'top-right'); 
-
-            mapView.when(() => {
-              this.mapLoaded.emit(true);
-              
-            })
+             
+          
+          });
           })
         }
       }

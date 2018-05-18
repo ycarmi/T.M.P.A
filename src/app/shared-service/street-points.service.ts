@@ -18,9 +18,14 @@ export class StreetPointsService {
 
   constructor(private _http:Http) { }
 
-  getStreetPoints(){
-    return this._http.get(this.baseUrl , this.options)
-    .map((response:Response)=>response.json()).catch(this.errorHandler);
+  async getStreetPoints() {
+    try{
+       let response = await this._http.get(this.baseUrl , this.options)
+    .toPromise()
+    return response.json();
+    }catch(error){
+      await this.errorHandler(error);
+    }
   }
   errorHandler(error:Response){
 
