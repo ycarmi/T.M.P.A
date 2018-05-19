@@ -178,9 +178,6 @@ export class EsriMapComponent implements OnInit {
 
   constructor(private _streetpointsservice:StreetPointsService) { }
 
- 
-
-
  subscribeToObs(jsonpoints) {
     jsonpoints.forEach(element => {
      var pointCorrdinate = [];
@@ -204,6 +201,129 @@ export class EsriMapComponent implements OnInit {
   let res = await  this._streetpointsservice.getStreetPoints();
   this.subscribeToObs(res);
 }
+showAllPoints(){
+  loadModules([
+    'esri/Map',
+    'esri/views/MapView',
+    "esri/widgets/Search"])
+    .then(([ EsriMap, EsriMapView,Search]) => { 
+      const mapProperties: esri.MapProperties = {
+        basemap: this._basemap
+      };
+
+      let map: esri.Map = new EsriMap(mapProperties);
+
+      // Set type for MapView constructor properties
+      const mapViewProperties: esri.MapViewProperties = {
+        container: this.mapViewEl.nativeElement,
+        center: this._center,
+        zoom: this._zoom,
+        map: map
+      };  
+      let mapView: esri.MapView = new EsriMapView(mapViewProperties);   
+          mapView.graphics.addMany([this.redPointsGraphic,this.yellowPointsGraphic,this.orangePointsGraphic]);
+          const searchWidget = new Search({
+            view: mapView
+            
+          });
+          
+          mapView.ui.add(searchWidget,'top-right');
+          
+    })
+}
+showYellowPoints(){
+  loadModules([
+    'esri/Map',
+    'esri/views/MapView',
+    "esri/widgets/Search"])
+    .then(([ EsriMap, EsriMapView,Search]) => { 
+      const mapProperties: esri.MapProperties = {
+        basemap: this._basemap
+      };
+
+      let map: esri.Map = new EsriMap(mapProperties);
+
+      // Set type for MapView constructor properties
+      const mapViewProperties: esri.MapViewProperties = {
+        container: this.mapViewEl.nativeElement,
+        center: this._center,
+        zoom: this._zoom,
+        map: map
+      };  
+      let mapView: esri.MapView = new EsriMapView(mapViewProperties);   
+          mapView.graphics.removeMany([this.redPointsGraphic,this.orangePointsGraphic]);
+          mapView.graphics.add(this.yellowPointsGraphic);
+          const searchWidget = new Search({
+            view: mapView
+            
+          });
+          
+          mapView.ui.add(searchWidget,'top-right');
+          
+    })
+}
+showOrangePoints(){
+  loadModules([
+    'esri/Map',
+    'esri/views/MapView',
+    "esri/widgets/Search"])
+    .then(([ EsriMap, EsriMapView,Search]) => { 
+      const mapProperties: esri.MapProperties = {
+        basemap: this._basemap
+      };
+
+      let map: esri.Map = new EsriMap(mapProperties);
+
+      // Set type for MapView constructor properties
+      const mapViewProperties: esri.MapViewProperties = {
+        container: this.mapViewEl.nativeElement,
+        center: this._center,
+        zoom: this._zoom,
+        map: map
+      };  
+      let mapView: esri.MapView = new EsriMapView(mapViewProperties);   
+          mapView.graphics.removeMany([this.redPointsGraphic,this.yellowPointsGraphic]);
+          mapView.graphics.add(this.orangePointsGraphic);
+          const searchWidget = new Search({
+            view: mapView
+            
+          });
+          
+          mapView.ui.add(searchWidget,'top-right');
+          
+    })
+}
+showRedPoints(){
+  loadModules([
+    'esri/Map',
+    'esri/views/MapView',
+    "esri/widgets/Search"])
+    .then(([ EsriMap, EsriMapView,Search]) => { 
+      const mapProperties: esri.MapProperties = {
+        basemap: this._basemap
+      };
+
+      let map: esri.Map = new EsriMap(mapProperties);
+
+      // Set type for MapView constructor properties
+      const mapViewProperties: esri.MapViewProperties = {
+        container: this.mapViewEl.nativeElement,
+        center: this._center,
+        zoom: this._zoom,
+        map: map
+      };  
+      let mapView: esri.MapView = new EsriMapView(mapViewProperties);   
+          mapView.graphics.removeMany([this.orangePointsGraphic,this.yellowPointsGraphic]);
+          mapView.graphics.add(this.redPointsGraphic);
+          const searchWidget = new Search({
+            view: mapView
+            
+          });
+          
+          mapView.ui.add(searchWidget,'top-right');
+          
+    })
+}
 
   public ngOnInit() {
          // First create a line geometry (this is the Keystone pipeline)
@@ -213,12 +333,10 @@ export class EsriMapComponent implements OnInit {
       'esri/views/MapView',
       "esri/Graphic",
       "esri/widgets/Search",
-      "esri/layers/MapImageLayer",
-      "dojo/on",
       "dojo/domReady!"
      
     ])
-      .then(([ EsriMap, EsriMapView, Graphic,Search, MapImageLayer,on]) => {
+      .then(([ EsriMap, EsriMapView, Graphic,Search]) => {
 
         // Set type for Map constructor properties
         const mapProperties: esri.MapProperties = {
@@ -241,6 +359,7 @@ export class EsriMapComponent implements OnInit {
           view: mapView
           
         });
+        
         mapView.ui.add(searchWidget,'top-right'); 
         this.foo().then(() =>{         
         Promise.all([this.setOrangeGraphic(),this.setYellowGraphic(),this.setRedGraphic()])
@@ -249,14 +368,12 @@ export class EsriMapComponent implements OnInit {
                 .addMany([this.redPointsGraphic,this.orangePointsGraphic,this.yellowPointsGraphic]);
                 mapView.when(() => {
                  this.mapLoaded.emit(true);
-               })   
+               })  
               })
-
-             
-          
           });
           })
-        }
+        }// ngOnInit 
+     
       }
 
      

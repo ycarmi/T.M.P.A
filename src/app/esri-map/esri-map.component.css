@@ -38,8 +38,10 @@ html,
 
 .sublayers-item {
   flex-grow: 4;
-  background-color: rgba(34, 111, 14, .5);
-  color: #FFF;
+/*   background-color: rgba(34, 111, 14, .5);
+ */  
+ background-color: black;
+ color: #FFF;
   margin: 1px;
   width: 50%;
   padding: 20px;
@@ -52,4 +54,23 @@ html,
 .visible-layer {
   color: #fff;
   background-color: #226F0E;
+} 
+#yellow{
+  color: yellow
+}
+#orange{
+  color: orange
+
+}
+#red{
+  color:red
+}
+#s{
+  color: yellow
+}
+#a{
+  color: orange
+}
+#p{
+  color: red
 }
