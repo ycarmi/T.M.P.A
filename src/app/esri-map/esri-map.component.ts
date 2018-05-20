@@ -1,3 +1,4 @@
+import { element } from 'protractor';
 import { Observable } from 'rxjs/Observable';
 /*
   Copyright 2018 Esri
@@ -18,6 +19,7 @@ import esri = __esri;
 import { StreetPoints } from '../street-points';
 import { StreetPointsService } from '../shared-service/street-points.service';
 import axios from 'axios' 
+import { constructDependencies } from '@angular/core/src/di/reflective_provider';
 
 
 @Component({
@@ -32,20 +34,51 @@ export class EsriMapComponent implements OnInit {
   private _zoom = 12;
   private _center = [-2.013236813, 52.57441986];
   private _basemap = 'streets';
-  private pointsCorrdinates = [];
-  redPointsGraphic;
-  yellowPointsGraphic;
-  orangePointsGraphic;
-  redPoints =  { type: "multipoint",points :[]};
-  orangePoints = { type: "multipoint",points :[]};
-  yellowPoints= { type: "multipoint",points :[]};
-  redPointsCorrdinates=[];
-  yellowPointsCorrdinates=[];
-  orangePointsCorrdinates=[];
+  
+  redPoints2   : StreetPoints[] = [];
+  orangePoints2 : StreetPoints[] = [];
+  yellowPoints2 : StreetPoints[] = [];      
   redMarkerSymbol = { type: "simple-marker", color: "red"};
-  orangeMarketSymbol = { type : "simple-marker", color : "orange"};
+  orangeMarkerSymbol = { type : "simple-marker", color : "orange"};
   yellowMarkerSymbol = { type : "simple-marker", color : "yellow"};
-  lineAtt = { Name: "Keystone Pipeline",Owner: "TransCanada",Length: "3,456 km" };
+  redGraphics  = [];
+  yellowGraphics  = [];
+  orangeGraphics = [];
+  
+  async fillinTheGraphics(){
+    await loadModules([
+      'esri/Graphic',"dojo/domReady!"
+    ])
+      .then(([Graphic]) => {
+        this.redPoints2.forEach(element => {
+        let redPoint = {type: "point",longitude :element.point.longitude, latitude : element.point.latitude}
+        let lineAtt = {CP: element.point.cp, region: element.point.region
+                        ,localAuthority: element.point.localAuthority};
+        let g = new Graphic( this.getGraphics(redPoint,this.redMarkerSymbol,lineAtt));
+        this.redGraphics.push(g);
+        });
+   
+        this.yellowPoints2.forEach(element => {
+          let yellowPoint = {type: "point",longitude :element.point.longitude, latitude : element.point.latitude}
+          let lineAtt = {CP: element.point.cp, region: element.point.region
+                          ,localAuthority: element.point.localAuthority};
+          let g = new Graphic( this.getGraphics(yellowPoint,this.yellowMarkerSymbol,lineAtt));
+          this.yellowGraphics.push(g);
+        })
+        this.orangePoints2.forEach(element => {
+          let orangePoint = {type: "point",longitude :element.point.longitude, latitude : element.point.latitude}
+          let lineAtt = {CP: element.point.cp, region: element.point.region
+                          ,localAuthority: element.point.localAuthority};
+          let g = new Graphic( this.getGraphics(orangePoint,this.orangeMarkerSymbol,lineAtt));
+          this.orangeGraphics.push(g);
+        })
+      })
+      .catch(err => {
+        console.error(err);
+      });
+
+
+  }
    renderer = {
     type: "simple", // autocasts as new SimpleRenderer()
     symbol: {
@@ -55,95 +88,10 @@ export class EsriMapComponent implements OnInit {
       style: "long-dash-dot-dot"
     }
   };
-  async setYellowGraphic(){
-    await loadModules([
-      'esri/Graphic',"dojo/domReady!"
-    ])
-      .then(([Graphic]) => {
-        this.yellowPointsGraphic = new Graphic({
-          geometry:this.yellowPoints,
-          symbol : this.yellowMarkerSymbol,
-          attributes : this.lineAtt,
-          popupTemplate: {
-            title: "{Name}",
-            content: [{
-              type: "fields",
-              fieldInfos: [{
-                fieldName: "Name"
-              }, {
-                fieldName: "Owner"
-              }, {
-                fieldName: "Length"
-              }]
-            }]
-          }
-        })
-       
-      })
-      .catch(err => {
-        console.error(err);
-      });
-  }
+  
 
-
-  async setOrangeGraphic(){
-    await loadModules([
-      'esri/Graphic',"dojo/domReady!"
-    ])
-      .then(([Graphic]) => {
-        this.orangePointsGraphic = new Graphic({
-          geometry:this.orangePoints,
-          symbol : this.orangeMarketSymbol,
-          attributes : this.lineAtt,
-          popupTemplate: {
-            title: "{Name}",
-            content: [{
-              type: "fields",
-              fieldInfos: [{
-                fieldName: "Name"
-              }, {
-                fieldName: "Owner"
-              }, {
-                fieldName: "Length"
-              }]
-            }]
-          }
-        })
-      })
-      .catch(err => {
-        console.error(err);
-      });
-  }
-
-   async setRedGraphic(){
-    await loadModules([
-      'esri/Graphic',"dojo/domReady!"
-    ])
-      .then(([Graphic]) => {
-        this.redPointsGraphic =  new Graphic({
-          geometry:this.redPoints,
-              symbol : this.redMarkerSymbol,
-              attributes : this.lineAtt,
-              popupTemplate: {
-                title: "{Name}",
-                    content: [{
-                      type: "fields",
-                      fieldInfos: [{
-                        fieldName: "Name"
-                      }, {
-                        fieldName: "Owner"
-                      }, {
-                        fieldName: "Length"
-                      }]
-                    }]
-                  }
-              })
-      })
-      .catch(err => {
-        console.error(err);
-      });
-  }
-  @Input()
+  
+    @Input()
   set zoom(zoom: number) {
     this._zoom = zoom;
   }
@@ -178,25 +126,7 @@ export class EsriMapComponent implements OnInit {
 
   constructor(private _streetpointsservice:StreetPointsService) { }
 
- subscribeToObs(jsonpoints) {
-    jsonpoints.forEach(element => {
-     var pointCorrdinate = [];
-     var statuses = element.statusOverTime;
-     var status = statuses[statuses.length-1].trafficStatus;
-     pointCorrdinate.push(element.point.longitude);
-     pointCorrdinate.push(element.point.latitude);
-     if(status == 4){
-       this.redPointsCorrdinates.push(pointCorrdinate);
-     }else if(status == 3){
-       this.orangePointsCorrdinates.push(pointCorrdinate);
-     }else if(status == 2){
-       this.yellowPointsCorrdinates.push(pointCorrdinate);
-     }
-   });
-   this.redPoints.points =    this.redPointsCorrdinates;
-   this.orangePoints.points =  this.orangePointsCorrdinates;
-   this.yellowPoints.points = this.yellowPointsCorrdinates;
-}
+ 
  async foo() {
   let res = await  this._streetpointsservice.getStreetPoints();
   this.subscribeToObs(res);
@@ -221,7 +151,9 @@ showAllPoints(){
         map: map
       };  
       let mapView: esri.MapView = new EsriMapView(mapViewProperties);   
-          mapView.graphics.addMany([this.redPointsGraphic,this.yellowPointsGraphic,this.orangePointsGraphic]);
+          mapView.graphics.addMany(this.redGraphics);
+          mapView.graphics.addMany(this.yellowGraphics);
+          mapView.graphics.addMany(this.orangeGraphics);
           const searchWidget = new Search({
             view: mapView
             
@@ -251,8 +183,9 @@ showYellowPoints(){
         map: map
       };  
       let mapView: esri.MapView = new EsriMapView(mapViewProperties);   
-          mapView.graphics.removeMany([this.redPointsGraphic,this.orangePointsGraphic]);
-          mapView.graphics.add(this.yellowPointsGraphic);
+          mapView.graphics.removeMany(this.redGraphics);
+          mapView.graphics.removeMany(this.orangeGraphics);
+          mapView.graphics.addMany(this.yellowGraphics);
           const searchWidget = new Search({
             view: mapView
             
@@ -282,8 +215,9 @@ showOrangePoints(){
         map: map
       };  
       let mapView: esri.MapView = new EsriMapView(mapViewProperties);   
-          mapView.graphics.removeMany([this.redPointsGraphic,this.yellowPointsGraphic]);
-          mapView.graphics.add(this.orangePointsGraphic);
+          mapView.graphics.removeMany(this.redGraphics);
+          mapView.graphics.removeMany(this.yellowGraphics);
+          mapView.graphics.addMany(this.orangeGraphics);
           const searchWidget = new Search({
             view: mapView
             
@@ -313,8 +247,10 @@ showRedPoints(){
         map: map
       };  
       let mapView: esri.MapView = new EsriMapView(mapViewProperties);   
-          mapView.graphics.removeMany([this.orangePointsGraphic,this.yellowPointsGraphic]);
-          mapView.graphics.add(this.redPointsGraphic);
+          mapView.graphics.removeMany(this.orangeGraphics);
+          mapView.graphics.removeMany(this.yellowGraphics);
+
+          mapView.graphics.addMany(this.redGraphics);
           const searchWidget = new Search({
             view: mapView
             
@@ -324,6 +260,39 @@ showRedPoints(){
           
     })
 }
+
+
+
+getGraphics(gGeometry , gSymbol,gAttributes){
+  return  {
+    geometry:gGeometry, symbol : gSymbol, attributes : gAttributes,
+    popupTemplate: { title: "{Name}",content: [{
+       type: "fields",
+        fieldInfos: [
+      {fieldName: "CP"},
+      {fieldName: "region"},
+      {fieldName: "localAuthority"}
+      ]
+    }]
+          }
+  }
+}
+
+subscribeToObs(jsonpoints) {
+  jsonpoints.forEach(element => {
+   var statuses = element.statusOverTime;
+   var status = statuses[statuses.length-1].trafficStatus;
+   if(status == 4){
+     this.redPoints2.push(element);
+   }else if(status == 3){
+     this.orangePoints2.push(element);
+   }else if(status == 2){
+     this.yellowPoints2.push(element);
+   }
+ });
+ console.log(this.redPoints2);
+}
+
 
   public ngOnInit() {
          // First create a line geometry (this is the Keystone pipeline)
@@ -359,13 +328,17 @@ showRedPoints(){
           view: mapView
           
         });
-        
+               
         mapView.ui.add(searchWidget,'top-right'); 
-        this.foo().then(() =>{         
-        Promise.all([this.setOrangeGraphic(),this.setYellowGraphic(),this.setRedGraphic()])
+        this.foo().then(() =>{   
+        Promise.all([this.fillinTheGraphics()])
                .then(() =>{
                 mapView.graphics
-                .addMany([this.redPointsGraphic,this.orangePointsGraphic,this.yellowPointsGraphic]);
+                .addMany(this.redGraphics);
+                mapView.graphics
+                .addMany(this.yellowGraphics);
+                mapView.graphics
+                .addMany(this.orangeGraphics);
                 mapView.when(() => {
                  this.mapLoaded.emit(true);
                })  
