@@ -6,7 +6,7 @@ public point : {    cp:Number,
     longitude: Number,roadName: string, roadCategory: string,
      linkLengthKm: Number
 }
-    public statusOverTime :{ 
+public statusOverTime :{ 
         year: Number;
         allMv: Number;
         trafficCapacityRatio : Number;
