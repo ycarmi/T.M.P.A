@@ -149,138 +149,6 @@ export class EsriMapComponent implements OnInit {
   let res = await  this._streetpointsservice.getStreetPoints();
   this.subscribeToObs(res);
 }
-showAllPoints(){
-  loadModules([
-    'esri/Map',
-    'esri/views/MapView',
-    "esri/widgets/Search"])
-    .then(([ EsriMap, EsriMapView,Search]) => { 
-      const mapProperties: esri.MapProperties = {
-        basemap: this._basemap
-      };
-
-      let map: esri.Map = new EsriMap(mapProperties);
-
-      // Set type for MapView constructor properties
-      const mapViewProperties: esri.MapViewProperties = {
-        container: this.mapViewEl.nativeElement,
-        center: this._center,
-        zoom: this._zoom,
-        map: map
-      };  
-      let mapView: esri.MapView = new EsriMapView(mapViewProperties);   
-          mapView.graphics.addMany(this.redGraphics);
-          mapView.graphics.addMany(this.yellowGraphics);
-          mapView.graphics.addMany(this.orangeGraphics);
-          const searchWidget = new Search({
-            view: mapView
-            
-          });
-          
-          mapView.ui.add(searchWidget,'top-right');
-          
-    })
-}
-showYellowPoints(){
-  loadModules([
-    'esri/Map',
-    'esri/views/MapView',
-    "esri/widgets/Search"])
-    .then(([ EsriMap, EsriMapView,Search]) => { 
-      const mapProperties: esri.MapProperties = {
-        basemap: this._basemap
-      };
-
-      let map: esri.Map = new EsriMap(mapProperties);
-
-      // Set type for MapView constructor properties
-      const mapViewProperties: esri.MapViewProperties = {
-        container: this.mapViewEl.nativeElement,
-        center: this._center,
-        zoom: this._zoom,
-        map: map
-      };  
-      let mapView: esri.MapView = new EsriMapView(mapViewProperties);   
-          mapView.graphics.removeMany(this.redGraphics);
-          mapView.graphics.removeMany(this.orangeGraphics);
-          mapView.graphics.addMany(this.yellowGraphics);
-          const searchWidget = new Search({
-            view: mapView
-            
-          });
-          
-          mapView.ui.add(searchWidget,'top-right');
-          
-    })
-}
-showOrangePoints(){
-  loadModules([
-    'esri/Map',
-    'esri/views/MapView',
-    "esri/widgets/Search"])
-    .then(([ EsriMap, EsriMapView,Search]) => { 
-      const mapProperties: esri.MapProperties = {
-        basemap: this._basemap
-      };
-
-      let map: esri.Map = new EsriMap(mapProperties);
-
-      // Set type for MapView constructor properties
-      const mapViewProperties: esri.MapViewProperties = {
-        container: this.mapViewEl.nativeElement,
-        center: this._center,
-        zoom: this._zoom,
-        map: map
-      };  
-      let mapView: esri.MapView = new EsriMapView(mapViewProperties);   
-          mapView.graphics.removeMany(this.redGraphics);
-          mapView.graphics.removeMany(this.yellowGraphics);
-          mapView.graphics.addMany(this.orangeGraphics);
-          const searchWidget = new Search({
-            view: mapView
-            
-          });
-          
-          mapView.ui.add(searchWidget,'top-right');
-          
-    })
-}
-showRedPoints(){
-  loadModules([
-    'esri/Map',
-    'esri/views/MapView',
-    "esri/widgets/Search"])
-    .then(([ EsriMap, EsriMapView,Search]) => { 
-      const mapProperties: esri.MapProperties = {
-        basemap: this._basemap
-      };
-
-      let map: esri.Map = new EsriMap(mapProperties);
-
-      // Set type for MapView constructor properties
-      const mapViewProperties: esri.MapViewProperties = {
-        container: this.mapViewEl.nativeElement,
-        center: this._center,
-        zoom: this._zoom,
-        map: map
-      };  
-      let mapView: esri.MapView = new EsriMapView(mapViewProperties);   
-          mapView.graphics.removeMany(this.orangeGraphics);
-          mapView.graphics.removeMany(this.yellowGraphics);
-
-          mapView.graphics.addMany(this.redGraphics);
-          const searchWidget = new Search({
-            view: mapView
-            
-          });
-          
-          mapView.ui.add(searchWidget,'top-right');
-          
-    })
-}
-
-
-
 getGraphics(gGeometry ,gAttributes){
   return  {
     geometry:gGeometry, 
@@ -392,84 +260,19 @@ getLayer(title,graphics,renderer ){
                 let redLayer = new FeatureLayer(this.getLayer("redLayer",this.redGraphics,this.redRenderer));
                 let orangeLayer = new FeatureLayer(this.getLayer("orangeLayer",this.orangeGraphics,this.orangeRenderer));
                 let yellowLayer = new FeatureLayer(this.getLayer("yellowLayer",this.yellowGraphics,this.yellowRenderer));
-                
-                new Promise(resolve =>{
-                  map.addMany([redLayer,orangeLayer,yellowLayer]);
-                }).then()
-                let rendererInfos;
-                let currentInfo;
-                
-                  var layerList = new LayerList({
-                    view: mapView,
-                    // Assign a function to the LayerList widget
-                    // that fires each time the relevant layer views are
-                    // updated. This function must return a two-dimensional
-                    // collection of action objects
-                    listItemCreatedFunction: createLayerListActions
-                  });
-                  mapView.ui.add(layerList, "bottom-right");
-                  // When any action in the LayerList is clicked,
-                  // the trigger-action event fires and the toggleRenderer()
-                  // callback executes
-                  layerList.on("trigger-action", toggleRenderer);
-                
-
-                // This function must return a two-dimensional array of
-                // action objects. This is done for the layer kept when the app
-                // originally loaded.
-                // One action is created for each rendererInfo object. The action title
-                // will match the title of the rendererInfo object (and the associated
-                // layer in the web map). The ID identifies the type of action executed
-                // and the className points to an icon font included in the API. This icon
-                // font is used to visually identify the action in the UI.
-
-                function createLayerListActions(event) {
-                  console.log("Im here!")
-                  var listItem = event.item;
-/*                   if (listItem.title === map.title) {
- */                 listItem.actionsOpen = true;
-                    listItem.actionsSections = [rendererInfos.map(function(
-                      rendererInfo) {
-                      return {
-                        title: rendererInfo.title,
-                        className: "esri-icon-maps",
-                        id: "change-renderer"
-                      };
-                    }).toArray()];
-/*                   }
- */                }
-
-                function toggleRenderer(event) {
-                  if (event.action.id === "change-renderer") {
-                    var matchingInfo = rendererInfos.find(function(info) {
-                      return info.title === event.action.title;
-                    });
-                    // don't attempt to change the renderer if
-                    // the selection is the same as the current renderer
-                    if (matchingInfo.title === currentInfo.title) {
-                      return;
-                    } else {
-                      currentInfo = matchingInfo;
-                    }
-                    // set the new renderer on the layer
-                    var renderer = matchingInfo.renderer;
-                    var layer = mapView.map.layers.getItemAt(0);
-/*                     layer.renderer = renderer;
- */                  }
-                }
-
-                
-                
+                map.addMany([redLayer,orangeLayer,yellowLayer]);           
+                let layerList = new LayerList({
+                  view: mapView
+                });
+                mapView.ui.add(layerList, "bottom-right");
                 mapView.when(() => {
                  this.mapLoaded.emit(true);
-                 
-               })  
+               })
               })
-          });
+            });
           })
         }// ngOnInit 
-     
-      }
+}
 
      
     
