@@ -8,7 +8,7 @@ public point : {    cp:Number,
 }
 public statusOverTime :{ 
         year: Number;
-        allMv: Number;
+        allMV: Number;
         trafficCapacityRatio : Number;
         trafficStatus : Number;
         estimationMethod : String   

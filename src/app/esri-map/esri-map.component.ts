@@ -34,7 +34,7 @@ export class EsriMapComponent implements OnInit {
   // Private vars with default values
   private _zoom = 12;
   private _center = [-2.013236813, 52.57441986];
-  private _basemap = 'streets';
+  private _basemap = 'streets-navigation-vector';
   
   redPoints2   : StreetPoints[] = [];
   orangePoints2 : StreetPoints[] = [];
@@ -72,11 +72,32 @@ export class EsriMapComponent implements OnInit {
         let counter = 1;
         this.redPoints2.forEach(element => {
         let redPoint = {type: "point",longitude :element.point.longitude, latitude : element.point.latitude}
+        let x = 21
         let lineAtt = {
           ObjectID : counter++,        
           CP: element.point.cp, 
                         region: element.point.region,
-                        localAuthority: element.point.localAuthority};
+                        localAuthority: element.point.localAuthority,
+                        linkLengthKm : element.point.linkLengthKm,
+                        year2000 :element.statusOverTime[0].trafficCapacityRatio,
+                        year2001 :element.statusOverTime[1].trafficCapacityRatio,
+                        year2002 :element.statusOverTime[2].trafficCapacityRatio,
+                        year2003 :element.statusOverTime[3].trafficCapacityRatio,
+                        year2004 :element.statusOverTime[4].trafficCapacityRatio,
+                        year2005 :element.statusOverTime[5].trafficCapacityRatio,
+                        year2006 :element.statusOverTime[6].trafficCapacityRatio,
+                        year2007 :element.statusOverTime[7].trafficCapacityRatio,
+                        year2008 :element.statusOverTime[8].trafficCapacityRatio,
+                        year2009 :element.statusOverTime[9].trafficCapacityRatio,
+                        year2010 :element.statusOverTime[10].trafficCapacityRatio,
+                        year2011 :element.statusOverTime[11].trafficCapacityRatio,
+                        year2012 :element.statusOverTime[12].trafficCapacityRatio,
+                        year2013 :element.statusOverTime[13].trafficCapacityRatio,
+                        year2014 :element.statusOverTime[14].trafficCapacityRatio,
+                        year2015 :element.statusOverTime[15].trafficCapacityRatio,
+                        year2016 :element.statusOverTime[16].trafficCapacityRatio,
+                        year2017 :element.statusOverTime[17].trafficCapacityRatio,
+                      };
         let g = new Graphic( this.getGraphics(redPoint,lineAtt));
         this.redGraphics.push(g);
         });
@@ -85,7 +106,26 @@ export class EsriMapComponent implements OnInit {
           let lineAtt = {
             ObjectID : counter++,        
             CP: element.point.cp, region: element.point.region
-                          ,localAuthority: element.point.localAuthority};
+                          ,localAuthority: element.point.localAuthority,
+                          linkLengthKm : element.point.linkLengthKm,
+                          year2000 :element.statusOverTime[0].trafficCapacityRatio,
+                          year2001 :element.statusOverTime[1].trafficCapacityRatio,
+                          year2002 :element.statusOverTime[2].trafficCapacityRatio,
+                          year2003 :element.statusOverTime[3].trafficCapacityRatio,
+                          year2004 :element.statusOverTime[4].trafficCapacityRatio,
+                          year2005 :element.statusOverTime[5].trafficCapacityRatio,
+                          year2006 :element.statusOverTime[6].trafficCapacityRatio,
+                          year2007 :element.statusOverTime[7].trafficCapacityRatio,
+                          year2008 :element.statusOverTime[8].trafficCapacityRatio,
+                          year2009 :element.statusOverTime[9].trafficCapacityRatio,
+                          year2010 :element.statusOverTime[10].trafficCapacityRatio,
+                          year2011 :element.statusOverTime[11].trafficCapacityRatio,
+                          year2012 :element.statusOverTime[12].trafficCapacityRatio,
+                          year2013 :element.statusOverTime[13].trafficCapacityRatio,
+                          year2014 :element.statusOverTime[14].trafficCapacityRatio,
+                          year2015 :element.statusOverTime[15].trafficCapacityRatio,
+                          year2016 :element.statusOverTime[16].trafficCapacityRatio,
+                          year2017 :element.statusOverTime[17].trafficCapacityRatio,};
           let g = new Graphic( this.getGraphics(yellowPoint,lineAtt));
           this.yellowGraphics.push(g);
         })
@@ -94,7 +134,26 @@ export class EsriMapComponent implements OnInit {
           let lineAtt = {
             ObjectID : counter++,        
             CP: element.point.cp, region: element.point.region
-                          ,localAuthority: element.point.localAuthority};
+                          ,localAuthority: element.point.localAuthority,
+                          linkLengthKm : element.point.linkLengthKm,
+                          year2000 :element.statusOverTime[0].trafficCapacityRatio,
+                          year2001 :element.statusOverTime[1].trafficCapacityRatio,
+                          year2002 :element.statusOverTime[2].trafficCapacityRatio,
+                          year2003 :element.statusOverTime[3].trafficCapacityRatio,
+                          year2004 :element.statusOverTime[4].trafficCapacityRatio,
+                          year2005 :element.statusOverTime[5].trafficCapacityRatio,
+                          year2006 :element.statusOverTime[6].trafficCapacityRatio,
+                          year2007 :element.statusOverTime[7].trafficCapacityRatio,
+                          year2008 :element.statusOverTime[8].trafficCapacityRatio,
+                          year2009 :element.statusOverTime[9].trafficCapacityRatio,
+                          year2010 :element.statusOverTime[10].trafficCapacityRatio,
+                          year2011 :element.statusOverTime[11].trafficCapacityRatio,
+                          year2012 :element.statusOverTime[12].trafficCapacityRatio,
+                          year2013 :element.statusOverTime[13].trafficCapacityRatio,
+                          year2014 :element.statusOverTime[14].trafficCapacityRatio,
+                          year2015 :element.statusOverTime[15].trafficCapacityRatio,
+                          year2016 :element.statusOverTime[16].trafficCapacityRatio,
+                          year2017 :element.statusOverTime[17].trafficCapacityRatio,};
           let g = new Graphic( this.getGraphics(orangePoint,lineAtt));
           this.orangeGraphics.push(g);
         })
@@ -106,9 +165,6 @@ export class EsriMapComponent implements OnInit {
 
   }
 
-  
-
-  
     @Input()
   set zoom(zoom: number) {
     this._zoom = zoom;
@@ -173,7 +229,7 @@ subscribeToObs(jsonpoints) {
 
 
 getGraphicsFields(){
-  return  [
+  let fields =   [
     ({
       name: "ObjectID",
       alias: "ObjectID",
@@ -191,8 +247,43 @@ getGraphicsFields(){
       name: "localAuthority",
       alias: "localAuthority",
       type: "string"
+    }),({
+      name : "linkLengthKm",
+      alias : "linkLengthKm",
+      type : "double"
     })
+    
    ];
+    return  fields.concat(this.getYearAttr())
+ }
+getYearAttr(){
+  let arr = []
+  for(let i =0;i<=9;i++){
+    arr.push({
+      name : "year200"+i,
+      alias: "year200"+i,
+      type :"int"
+    })
+  }
+  for(let i =10;i<17;i++){
+    arr.push({
+      name : "year20"+i,
+      alias: "year20"+i,
+      type :"int"
+    })
+  }
+  return arr;
+}
+
+
+getYearFields(){
+  let arr = []
+  for(let i =0;i<=9;i++)
+    arr.push("year200"+i)
+  
+  for(let i =10;i<17;i++)
+    arr.push("year20"+i)
+  return arr;
 }
 
 getLayer(title,graphics,renderer ){
@@ -208,16 +299,26 @@ getLayer(title,graphics,renderer ){
        fieldInfos: [
          {fieldName: "CP"},
          {fieldName: "region"},
-         {fieldName: "localAuthority"}
+         {fieldName: "localAuthority"},
+         {fieldName :"linkLengthKm" }
+
        ]
+    },{
+    type: "media",
+    mediaInfos: [{
+      title: "<b>Status Chart</b>",
+      type: "line-chart",
+      value: {
+        fields : this.getYearFields(),
+      }
     }]
+  }]
    },
    renderer :renderer
   });
 }
 
   public ngOnInit() {
-         // First create a line geometry (this is the Keystone pipeline)
 
     loadModules([
       'esri/Map',
@@ -260,8 +361,13 @@ getLayer(title,graphics,renderer ){
                 let redLayer = new FeatureLayer(this.getLayer("redLayer",this.redGraphics,this.redRenderer));
                 let orangeLayer = new FeatureLayer(this.getLayer("orangeLayer",this.orangeGraphics,this.orangeRenderer));
                 let yellowLayer = new FeatureLayer(this.getLayer("yellowLayer",this.yellowGraphics,this.yellowRenderer));
-                map.addMany([redLayer,orangeLayer,yellowLayer]);           
-                let layerList = new LayerList({
+                map.addMany([redLayer,orangeLayer,yellowLayer]);      
+                /* var createChart = function(data){
+                  console.log("Hey!!!")
+                  return "data"
+                } */
+/*                 redLayer.popupTemplate.content = "{CP:createChart}";     
+ */                let layerList = new LayerList({
                   view: mapView
                 });
                 mapView.ui.add(layerList, "bottom-right");
