@@ -7,6 +7,7 @@ import 'rxjs/add/observable/throw';
 import {User} from '../user';
 import {Street} from '../street';
 import {StreetPoints} from '../street-points';
+import { Router } from '@angular/router';
 
 @Injectable()
 export class StreetPointsService {
@@ -17,6 +18,8 @@ export class StreetPointsService {
   private streetpoints: StreetPoints;
 
   constructor(private _http:Http) { }
+  
+  
 
   async getStreetPoints() {
     try{

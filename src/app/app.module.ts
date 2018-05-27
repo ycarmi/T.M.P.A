@@ -35,7 +35,8 @@ const appRoutes: Routes =[
   {path: 'streets', component: StreetsComponent},
   {path: 'street-creation', component: StreetCreationComponent},
   {path: 'users', component: UsersComponent},
-  {path: 'op', component: UserCreationComponent}
+  {path: 'op', component: UserCreationComponent},
+  {path: 'esri-map', component: EsriMapComponent}
 
 ]
 

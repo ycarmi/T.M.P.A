@@ -1,24 +1,28 @@
+ <app-navigation-bar-admin></app-navigation-bar-admin>
  <div class="parallax">
   <div class="container ">
     <table datatable [dtOptions]="dtOptions" [dtTrigger]="dtTrigger" class="row-border hover">
       <thead>
         <tr>
         <th>Region</th>
-        <th>LocalAuthority</th>
-        <th>Road</th>
-        <th>Road Category</th> 
-        <th>Change Formate</th>
+        <th>Local Authority</th>
+        <th>Road Name</th>
+        <th>Road Category</th>
+        <th>Counting Point</th>
+        <th>Link Length Km</th> 
+        <th>To Map</th>
         </tr>
       </thead>
       <tbody>
         <tr *ngFor="let street of streets">
-          <td>{{street.region}} </td>
-          <td>{{street.localAuthority}} </td>
-          <td>{{street.road}} </td>
-          <td>{{street.roadCategory}} </td> 
-           <td><button (click)="deleteStreet(street)"  class="btn btn-outline-danger"> Delete </button>
-          <button (click)="UpdateStreet(street)" class="btn btn-outline-info"> Edit </button> 
-         </td>  
+          <td>{{street.point.region}} </td>
+          <td>{{street.point.localAuthority}} </td>
+          <td>{{street.point.roadName}} </td>
+          <td>{{street.point.roadCategory}} </td> 
+          <td>{{street.point.cp}} </td>
+          <td>{{street.point.linkLengthKm}} </td>
+
+          <td><button (click)="GoToMap(street)"  class="btn btn-outline-danger"> Go Live </button></td>  
           </tr> 
         </tbody>
         <!--button (click)="NewUser()" class="btn btn-outline-warning"> New User </button-->

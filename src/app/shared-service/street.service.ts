@@ -5,16 +5,35 @@ import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/catch';
 import 'rxjs/add/observable/throw';
 import {User} from '../user';
-import {Street} from '../street';
+import { StreetCreationComponent } from '../street-creation/street-creation.component';
+import { StreetPoints } from '../street-points';
+import { Router } from '@angular/router';
 
 @Injectable()
 export class StreetService {
-  private baseUrl: string='http://localhost:8080/Streets';
+  private baseUrl: string='http://localhost:8080/Status';
   private headers = new Headers ({'Content-Type':'application/json'});
   private options = new RequestOptions ({headers:this.headers});
-  private street: Street;
+  private streetPoints: StreetPoints;
 
-  constructor(private _http:Http) { }
+  constructor(private _http:Http, private router:Router) { }
+
+  private data;
+  
+  setData(data)
+  {
+    this.data=data;
+  }
+  getData()
+  {
+    let temp= this.data;
+    /* this.clearData(); */
+    return temp;
+  }
+  clearData()
+  {
+    this.data=undefined;
+  }
 
   getStreets(){
     return this._http.get(this.baseUrl , this.options)
@@ -44,7 +63,7 @@ export class StreetService {
     .catch(this.errorHandler);
 
   } */
-  createStreet( street:Street){
+  /* createStreet( street:Street){
     console.log(street);
     return this._http.post(this.baseUrl+ 'Upload/SaveDetails', JSON.stringify(street), this.options).map((response:Response)=> response.json())
     .catch(this.errorHandler);
@@ -54,16 +73,16 @@ export class StreetService {
     
     return this._http.put(this.baseUrl+ '/UpdateAdmin', JSON.stringify(street), this.options).map((response:Response)=> response.json())
     .catch(this.errorHandler);
-    }
+    } */
   errorHandler(error:Response){
 
     return Observable.throw(error||"SERVER ERROR");
 
   }
-  setter(street:Street){
-    this.street=street;
+   setter(street:StreetPoints){
+    this.streetPoints=street;
   }
   getter(){
-    return this.street;
-  }
+    return this.streetPoints;
+  } 
 }

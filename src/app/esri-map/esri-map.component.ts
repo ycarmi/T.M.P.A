@@ -21,17 +21,22 @@ import { StreetPointsService } from '../shared-service/street-points.service';
 import axios from 'axios' 
 import { constructDependencies } from '@angular/core/src/di/reflective_provider';
 import { resolve } from 'url';
+import { Street } from '../street';
+import { StreetService } from '../shared-service/street.service';
+import { Router } from '@angular/router'
+import { Point } from 'esri/geometry';
 
 
 @Component({
   selector: 'app-esri-map',
   templateUrl: './esri-map.component.html',
-  styleUrls: ['./esri-map.component.css']
+  styleUrls: ['./esri-map.component.css'],
+  
 })
 
 export class EsriMapComponent implements OnInit {
-
   // Private vars with default values
+  data = this._streetservice.getData();
   private _zoom = 12;
   private _center = [-2.013236813, 52.57441986];
   private _basemap = 'streets-navigation-vector';
@@ -161,10 +166,7 @@ export class EsriMapComponent implements OnInit {
       .catch(err => {
         console.error(err);
       });
-
-
   }
-
     @Input()
   set zoom(zoom: number) {
     this._zoom = zoom;
@@ -198,7 +200,12 @@ export class EsriMapComponent implements OnInit {
   @ViewChild('mapViewNode') private mapViewEl: ElementRef;
   
 
-  constructor(private _streetpointsservice:StreetPointsService) { }
+  constructor(private _streetpointsservice:StreetPointsService,private _streetservice : StreetService, private router : Router){ 
+    if(this.data ){
+      this._center=this.data;
+      this._zoom=15; 
+    } 
+  }
 
  
  async foo() {
@@ -340,6 +347,7 @@ getLayer(title,graphics,renderer ){
         let map: esri.Map = new EsriMap(mapProperties);
 
         // Set type for MapView constructor properties
+       
         const mapViewProperties: esri.MapViewProperties = {
           container: this.mapViewEl.nativeElement,
           center: this._center,

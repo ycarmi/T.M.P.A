@@ -36,13 +36,13 @@ export class NavigationBarAdminComponent implements OnInit {
     this._router.navigate(['/op']);
 
   }
-  NewStreet(){
+ /*  NewStreet(){
     
     let street = new Street()
     this._streetService.setter(street);
     this._router.navigate(['/street-creation']);
 
-  }
+  } */
  
 
 }

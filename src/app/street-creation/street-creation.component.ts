@@ -14,25 +14,8 @@ export class StreetCreationComponent implements OnInit {
   constructor(private _streetService: StreetService , private _router: Router) { }
 
   ngOnInit() {
-    this.street=this._streetService.getter()
 
   }
 
-   ProcessForm(){
-     if(this.street.road==undefined){
-       this._streetService.createStreet(this.street).subscribe((street)=>{
-         console.log(street);
-         this._router.navigate(['/streets']);
-       },(error)=>{
-         console.log(error);
-       });
-     }else{
-      this._streetService.updateStreet(this.street).subscribe((street)=>{
-        console.log(street);
-        this._router.navigate(['/streets']);
-      },(error)=>{
-        console.log(error);
-      });
-     }
-   }
+   
 }
