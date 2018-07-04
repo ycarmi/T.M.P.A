@@ -13,36 +13,27 @@ import { StreetPoints } from '../street-points';
   styleUrls: ['./navigation-bar-admin.component.scss']
 })
 export class NavigationBarAdminComponent implements OnInit {
-  private users:User[];
-  private streets:Street[];
+  private users:User[];//empty array for users
+  private streets:Street[];//empty array for streets
   private streetpoints:StreetPoints[];
-  constructor(private _userService:UserService,private _streetService:StreetService, private _router:Router) { }
+  constructor(private _userService:UserService,private _streetService:StreetService, private _router:Router) { }//get data from the data-base
 
   ngOnInit() {
    this._userService.getUsers().subscribe((GetAllUsers)=>{
-      this.users=GetAllUsers;
+      this.users=GetAllUsers;//set variables 
     }, (error)=>{
       console.log(error);
     }) 
      this._streetService.getStreets().subscribe((Streets)=>{
-      this.streets=Streets;
+      this.streets=Streets;//set variables
     }, (error)=>{
       console.log(error);
     }) 
   }
-  NewUser(){
+  NewUser(){//add new user to the data-base 
     let user = new User()
     this._userService.setter(user);
     this._router.navigate(['/op']);
 
   }
- /*  NewStreet(){
-    
-    let street = new Street()
-    this._streetService.setter(street);
-    this._router.navigate(['/street-creation']);
-
-  } */
- 
-
 }

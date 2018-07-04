@@ -9,7 +9,7 @@ import { Router } from '@angular/router';
 })
 
 export class FormComponent implements OnInit {
-  serverurl:string = "http://localhost:8080/";
+  serverurl:string = "http://localhost:8080/";//get the basic data base URL
   name:string = '';
   pass:string = '';
   isProgramManager  = false;
@@ -19,18 +19,18 @@ export class FormComponent implements OnInit {
   
   constructor(private httpClient:HttpClient ,private router:Router){  }
   ngOnInit(){}
-  setUserName(event:any){
+  setUserName(event:any){// set user name that been insert at the form 
     this.name = event.target.value;
     this.found = false;
   }
-  setPass(event:any){
+  setPass(event:any){// set the password that been insert at the form 
     this.pass = event.target.value;
   }
-  radioChangeHandler(event:any){
+  radioChangeHandler(event:any){//set the choosen radio button
     this.radio= event.target.value;
   }
   
-  logIn(){ 
+  logIn(){ // route the user to his page if he is admin or program-manager
     if(this.radio =="Admin"){
 
           this.httpClient.post(this.serverurl+`Admin/Login`,
@@ -48,7 +48,6 @@ export class FormComponent implements OnInit {
           }
         )
     }
-    
     else if (this.radio = "ProgramManager"){
       this.httpClient.post(this.serverurl+`ProgramManager/Login`,
       {
@@ -67,24 +66,9 @@ export class FormComponent implements OnInit {
     )
     }
   }
-  getUser(){
+  getUser(){// get users from data-base and set them at a variable
     var users = this.httpClient.get(this.serverurl+"/GetAllUsers");
-
   }
-  /* loginUser(e){
-    e.preventDefault();
-    var radio = e.target.value;
-    if(radio='admin'){
-      this.router.navigate(['admin']);
-    } */
-  
- /*  MoveToHomePage(){
-    if(this.radio="Admin"){
-      RouterLink= "/admin";
-    }
-
-  } */
-  
 }
 
 

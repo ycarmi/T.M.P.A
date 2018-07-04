@@ -12,7 +12,7 @@ import { Router } from '@angular/router';
 @Injectable()
 export class StreetPointsService {
 
-  private baseUrl: string='http://localhost:8080/Status';
+  private baseUrl: string='http://localhost:8080/Status';//set data base URL 
   private headers = new Headers ({'Content-Type':'application/json'});
   private options = new RequestOptions ({headers:this.headers});
   private streetpoints: StreetPoints;
@@ -21,7 +21,7 @@ export class StreetPointsService {
   
   
 
-  async getStreetPoints() {
+  async getStreetPoints() {//get street points an add them to variable
     try{
        let response = await this._http.get(this.baseUrl , this.options)
     .toPromise()

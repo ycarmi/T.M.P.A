@@ -1,3 +1,4 @@
+
 /* import the required JSAPI css */
 @import 'https://js.arcgis.com/4.6/esri/css/main.css';
 
@@ -12,7 +13,7 @@ html,
       height: 100%;
       width: 100%;
     }
-
+    /*The ID that shown at the esri-map component html*/
     #mapViewNode {
       position: absolute;
       right: 0;
@@ -37,11 +38,9 @@ html,
 }
 
 .sublayers-item {
-  flex-grow: 4;
-/*   background-color: rgba(34, 111, 14, .5);
- */  
- background-color: black;
- color: #FFF;
+  flex-grow: 4; 
+  background-color: black;
+  color: #FFF;
   margin: 1px;
   width: 50%;
   padding: 20px;
@@ -55,22 +54,3 @@ html,
   color: #fff;
   background-color: #226F0E;
 } 
-#yellow{
-  color: yellow
-}
-#orange{
-  color: orange
-
-}
-#red{
-  color:red
-}
-#s{
-  color: yellow
-}
-#a{
-  color: orange
-}
-#p{
-  color: red
-}

@@ -8,19 +8,19 @@ import {User} from '../user';
 
 @Injectable()
 export class UserService {
-  private baseUrl: string='http://localhost:8080/Admin';
+  private baseUrl: string='http://localhost:8080/Admin';//set users URL
   private headers = new Headers ({'Content-Type':'application/json'});
   private options = new RequestOptions ({headers:this.headers});
   private user: User;
 
   constructor(private _http:Http) { }
 
-  getUsers(){
+  getUsers(){//get all users from data-base
     return this._http.get(this.baseUrl+ '/GetAllUsers' , this.options)
     .map((response:Response)=>response.json()).catch(this.errorHandler);
 
   }
-  getUser(id: Number){
+  getUser(id: Number){//get user depend on his ID 
     return this._http.get(this.baseUrl+ '/' + id , this.options).map((response:Response)=> response.json())
     .catch(this.errorHandler);
 
@@ -38,11 +38,6 @@ export class UserService {
     .catch(this.errorHandler);
     }
   }
-  /* deleteUserProgramManager(id:Number){
-    return this._http.delete('http://localhost:8080/ProgramManger/' + id , this.options).map((response:Response)=> response.json())
-    .catch(this.errorHandler);
-
-  } */
   createUser( user:User){
     console.log(user);
     if(this.user.type=="Admin")
@@ -56,7 +51,7 @@ export class UserService {
     .catch(this.errorHandler);
     }
   } 
-  updateUser( user:User){
+  updateUser( user:User){//change user name or password
     if(this.user.type=="Admin")
     {
     return this._http.put(this.baseUrl+ '/UpdateAdmin', JSON.stringify(user), this.options).map((response:Response)=> response.json())

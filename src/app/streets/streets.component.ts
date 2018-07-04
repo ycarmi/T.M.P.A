@@ -17,12 +17,12 @@ export class StreetsComponent implements OnInit {
   
   
   private streets:any[];
-  dtOptions: DataTables.Settings = {};
+  dtOptions: DataTables.Settings = {};//angular data table
   dtTrigger: Subject<any> = new Subject();
   
   constructor(private _streetService:StreetService, private _router:Router, private http: Http ) { }
   
-  GoToMap(street){
+  GoToMap(street){//after clicking on the go to map button at the street table, the function send data to the esri map component
     let latitude= street.point.latitude;
     let longitude=street.point.longitude;
     let data = [longitude,latitude];
@@ -30,7 +30,7 @@ export class StreetsComponent implements OnInit {
     this._router.navigate(['/esri-map']);
 
   }
-  ngOnInit(): void {
+  ngOnInit(): void {//adding the data that we got from the data-base to the table -
     this.dtOptions = {
       pagingType: 'full_numbers',
       pageLength: 10
@@ -43,7 +43,4 @@ export class StreetsComponent implements OnInit {
       console.log(error);
     })
   }
-  
-  
-
 }

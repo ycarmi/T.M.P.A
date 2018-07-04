@@ -1,5 +1,4 @@
-import { element } from 'protractor';
-import { Observable } from 'rxjs/Observable';
+
 /*
   Copyright 2018 Esri
   Licensed under the Apache License, Version 2.0 (the "License");
@@ -12,7 +11,8 @@ import { Observable } from 'rxjs/Observable';
   See the License for the specific language governing permissions and
   limitations under the License.
 */
-
+import { element } from 'protractor';
+import { Observable } from 'rxjs/Observable';
 import { Component, OnInit, ViewChild, ElementRef, Input, Output, EventEmitter } from '@angular/core';
 import { loadModules } from 'esri-loader';
 import esri = __esri;
@@ -36,14 +36,14 @@ import { Point } from 'esri/geometry';
 
 export class EsriMapComponent implements OnInit {
   // Private vars with default values
-  data = this._streetservice.getData();
-  private _zoom = 12;
-  private _center = [-2.013236813, 52.57441986];
-  private _basemap = 'streets-navigation-vector';
+  data = this._streetservice.getData();//the data that is imported from the data-base server 
+  private _zoom = 12;// a default zoom for the map 
+  private _center = [-2.013236813, 52.57441986];// default latitude longitude to show the map 
+  private _basemap = 'streets-navigation-vector';// map style
   
-  redPoints2   : StreetPoints[] = [];
-  orangePoints2 : StreetPoints[] = [];
-  yellowPoints2 : StreetPoints[] = [];      
+  redPoints2   : StreetPoints[] = [];// array for the red points data that show red counting points streets
+  orangePoints2 : StreetPoints[] = [];// array for the orange points data that show orange counting points streets
+  yellowPoints2 : StreetPoints[] = [];// array for the yellow points data that show yellow counting points streets    
   redRenderer = {
     type: "simple", // autocasts as new SimpleRenderer()
     symbol: {
@@ -65,20 +65,20 @@ export class EsriMapComponent implements OnInit {
        color: "yellow"
       }
   };
-  redGraphics  = [];
-  yellowGraphics  = [];
-  orangeGraphics = [];
+  redGraphics  = [];// array of red points graphics
+  yellowGraphics  = [];// array of yellow points graphics
+  orangeGraphics = [];// array of orange points graphics
   
-  async fillinTheGraphics(){
+  async fillinTheGraphics(){//functiont to add the points graphics at the esri map 
     await loadModules([
       'esri/Graphic',"dojo/domReady!"
     ])
       .then(([Graphic]) => {
         let counter = 1;
-        this.redPoints2.forEach(element => {
+        this.redPoints2.forEach(element => {// adding the red points graphics and data depend on longitude latitude of each point
         let redPoint = {type: "point",longitude :element.point.longitude, latitude : element.point.latitude}
         let x = 21
-        let lineAtt = {
+        let lineAtt = {//popup data at map on every point
           ObjectID : counter++,        
           CP: element.point.cp, 
                         region: element.point.region,
@@ -106,9 +106,9 @@ export class EsriMapComponent implements OnInit {
         let g = new Graphic( this.getGraphics(redPoint,lineAtt));
         this.redGraphics.push(g);
         });
-        this.yellowPoints2.forEach(element => {
+        this.yellowPoints2.forEach(element => {// adding the yellow points graphics and data depend on longitude latitude of each point
           let yellowPoint = {type: "point",longitude :element.point.longitude, latitude : element.point.latitude}
-          let lineAtt = {
+          let lineAtt = {//popup data at map on every point
             ObjectID : counter++,        
             CP: element.point.cp, region: element.point.region
                           ,localAuthority: element.point.localAuthority,
@@ -134,9 +134,9 @@ export class EsriMapComponent implements OnInit {
           let g = new Graphic( this.getGraphics(yellowPoint,lineAtt));
           this.yellowGraphics.push(g);
         })
-        this.orangePoints2.forEach(element => {
+        this.orangePoints2.forEach(element => {// adding the orange points graphics and data depend on longitude latitude of each point
           let orangePoint = {type: "point",longitude :element.point.longitude, latitude : element.point.latitude}
-          let lineAtt = {
+          let lineAtt = {//popup data at map on every point
             ObjectID : counter++,        
             CP: element.point.cp, region: element.point.region
                           ,localAuthority: element.point.localAuthority,
@@ -199,27 +199,27 @@ export class EsriMapComponent implements OnInit {
   // this is needed to be able to create the MapView at the DOM element in this component
   @ViewChild('mapViewNode') private mapViewEl: ElementRef;
   
-
-  constructor(private _streetpointsservice:StreetPointsService,private _streetservice : StreetService, private router : Router){ 
+// getting all the data that been needed to the component, from the data base using the service component
+  constructor(private _streetpointsservice:StreetPointsService,private _streetservice : StreetService, private router : Router){
+    //checking if their is a spasific latitude longitude to show on map, this condition is used when user 
+    //choose a point from the table data at admin street page  
     if(this.data ){
       this._center=this.data;
       this._zoom=15; 
     } 
   }
-
- 
- async foo() {
+ async foo() {// insert streets data to a variable  
   let res = await  this._streetpointsservice.getStreetPoints();
   this.subscribeToObs(res);
 }
-getGraphics(gGeometry ,gAttributes){
+getGraphics(gGeometry ,gAttributes){// esri map API graphics imports
   return  {
     geometry:gGeometry, 
     attributes : gAttributes
   }
 }
 
-subscribeToObs(jsonpoints) {
+subscribeToObs(jsonpoints) {//sorting street data points depend on status number that we set in data base
   jsonpoints.forEach(element => {
    var statuses = element.statusOverTime;
    var status = statuses[statuses.length-1].trafficStatus;
@@ -235,7 +235,7 @@ subscribeToObs(jsonpoints) {
 
 
 
-getGraphicsFields(){
+getGraphicsFields(){// pop-up fields
   let fields =   [
     ({
       name: "ObjectID",
@@ -293,7 +293,7 @@ getYearFields(){
   return arr;
 }
 
-getLayer(title,graphics,renderer ){
+getLayer(title,graphics,renderer ){// add API layers
   return ({
     title : title,
     source : graphics,
@@ -325,8 +325,8 @@ getLayer(title,graphics,renderer ){
   });
 }
 
-  public ngOnInit() {
-
+  public ngOnInit() {// the page start here all the other function help the page to start 
+    //load modules from esri API 
     loadModules([
       'esri/Map',
       'esri/views/MapView',
@@ -354,14 +354,11 @@ getLayer(title,graphics,renderer ){
           zoom: this._zoom,
           map: map
         };
-        
-
+        //Adding the engine at the map  
         let mapView: esri.MapView = new EsriMapView(mapViewProperties);
         const searchWidget = new Search({
           view: mapView
-          
-        });
-               
+        });    
         mapView.ui.add(searchWidget,'top-right'); 
         this.foo().then(() =>{   
         Promise.all([this.fillinTheGraphics()])
