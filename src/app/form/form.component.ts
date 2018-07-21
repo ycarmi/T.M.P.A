@@ -1,6 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Router } from '@angular/router';
+import { MatDialog} from '@angular/material';
+import { ErrorPopupComponent } from "../error-popup/error-popup.component"
+
 
 @Component({
   selector: 'app-form',
@@ -17,7 +20,7 @@ export class FormComponent implements OnInit {
   found:boolean;
   radio:string = '';
   
-  constructor(private httpClient:HttpClient ,private router:Router){  }
+  constructor(private httpClient:HttpClient ,private router:Router, public dialog:MatDialog){  }
   ngOnInit(){}
   setUserName(event:any){// set user name that been insert at the form 
     this.name = event.target.value;
@@ -44,6 +47,11 @@ export class FormComponent implements OnInit {
                 this.router.navigate(['admin']);
               }else {
                 // return error massage to the user.
+                let dialogRef= this.dialog.open(ErrorPopupComponent, {
+                  height:"250px",
+                  width: "500px"
+                });
+
               }
           }
         )
@@ -60,7 +68,12 @@ export class FormComponent implements OnInit {
           if(data > 0 ){
             this.router.navigate(['program-manager']);
           }else {
+            
             // return error massage to the user.
+            let dialogRef= this.dialog.open(ErrorPopupComponent, {
+              height:"250px",
+              width: "500px"
+            });
           }
       }
     )

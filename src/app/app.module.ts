@@ -22,10 +22,12 @@ import { UsersComponent } from './users/users.component';
 import { FormsModule } from '@angular/forms';
 import { DatePipe } from '@angular/common';
 import { StreetCreationComponent } from './street-creation/street-creation.component';
-
 import { StreetService } from './shared-service/street.service'; 
 import { StreetPointsService } from './shared-service/street-points.service';
 import { DataTablesModule } from 'angular-datatables';
+import { ErrorPopupComponent } from './error-popup/error-popup.component';
+import { MatDialogModule} from "@angular/material";
+import { BrowserAnimationsModule} from "@angular/platform-browser/animations"
 
 
 const appRoutes: Routes =[
@@ -56,7 +58,8 @@ const appRoutes: Routes =[
     EsriMapComponent,
     UserCreationComponent,
     UsersComponent,
-    StreetCreationComponent
+    StreetCreationComponent,
+    ErrorPopupComponent,
   ],
   imports: [
     BrowserModule,
@@ -65,11 +68,14 @@ const appRoutes: Routes =[
     HttpModule,
     MDBBootstrapModule.forRoot(),
     RouterModule.forRoot(appRoutes),
-    DataTablesModule
+    DataTablesModule,
+    MatDialogModule,
+    BrowserAnimationsModule
 
   ],
   schemas: [ NO_ERRORS_SCHEMA ],
   providers: [UserService , StreetService, StreetPointsService],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
+  entryComponents: [ErrorPopupComponent]
 })
 export class AppModule { }
