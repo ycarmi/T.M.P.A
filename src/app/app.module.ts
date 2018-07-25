@@ -27,7 +27,9 @@ import { StreetPointsService } from './shared-service/street-points.service';
 import { DataTablesModule } from 'angular-datatables';
 import { ErrorPopupComponent } from './error-popup/error-popup.component';
 import { MatDialogModule} from "@angular/material";
-import { BrowserAnimationsModule} from "@angular/platform-browser/animations"
+import { BrowserAnimationsModule} from "@angular/platform-browser/animations";
+import { DashboardsComponent } from './dashboards/dashboards.component';
+
 
 
 const appRoutes: Routes =[
@@ -38,7 +40,9 @@ const appRoutes: Routes =[
   {path: 'street-creation', component: StreetCreationComponent},
   {path: 'users', component: UsersComponent},
   {path: 'op', component: UserCreationComponent},
-  {path: 'esri-map', component: EsriMapComponent}
+  {path: 'esri-map', component: EsriMapComponent},
+  {path: 'dashboards', component: DashboardsComponent}
+
 
 ]
 
@@ -60,6 +64,7 @@ const appRoutes: Routes =[
     UsersComponent,
     StreetCreationComponent,
     ErrorPopupComponent,
+    DashboardsComponent,
   ],
   imports: [
     BrowserModule,

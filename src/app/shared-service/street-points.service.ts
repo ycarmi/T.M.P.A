@@ -35,6 +35,7 @@ export class StreetPointsService {
     return Observable.throw(error||"SERVER ERROR");
 
   }
+ 
   setter(streetpoints:StreetPoints){
     this.streetpoints= streetpoints;
   }
