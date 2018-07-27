@@ -1,3 +1,5 @@
-<div *ngIf="chart">
+
+
+<div [hidden] ="!chart">
   <canvas id="canvas">{{ chart }}</canvas>
-</div>
+

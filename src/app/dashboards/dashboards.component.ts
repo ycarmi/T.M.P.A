@@ -13,13 +13,14 @@ import { StreetPoints } from '../street-points';
 })
 export class DashboardsComponent implements OnInit {
   chart= [];
+  years1 =[];
   redPoints2   : StreetPoints[] = [];
   orangePoints2 : StreetPoints[] = [];
   yellowPoints2 : StreetPoints[] = [];
 
   constructor(private _streetService:StreetService, private _streetpointsservice:StreetPointsService ) { }
   
-  subscribeToObs(jsonpoints) {
+  /* subscribeToObs(jsonpoints) {
     jsonpoints.forEach(element => {
      var statuses = element.statusOverTime;
      var status = statuses[statuses.length-1].trafficStatus;
@@ -31,36 +32,39 @@ export class DashboardsComponent implements OnInit {
        this.yellowPoints2.push(element);
      }
    });
-  }
+  } */
   async foo() {// insert streets data to a variable  
-    let res = await  this._streetService.getStreets();
-    this.subscribeToObs(res);
+    let res = await this._streetpointsservice.getStreetPoints();
+    /* this.subscribeToObs(res); */
+    this.subscribe(res);
   }
+  async subscribe(points){
+    points.forEach(element=>{
+      var year= element.statusOverTime;
+       var years= this.years1.push(element);
+    
+    })
+  }
+
    ngOnInit() {
-    this.foo();
-    console.log(this.redPoints2);
-    console.log(this.yellowPoints2);
-    console.log(this.orangePoints2);
-    this._streetService.getStreets()
-    .subscribe(res=>{
-      console.log(res)
-      let year =  res ['statusOverTime'].map(res=> res.year);
-      let trafficCapacityRatio = res['statusOverTime'].map(res => res.trafficCapacityRatio);
+/*       this.foo(); 
+ */     Promise.all([this.foo()])
+     .then(()=>{
       this.chart = new Chart('canvas', {
         type: 'line',
         data: {
-          labels: year,
+          labels: this.years1,
           datasets: [
             { 
-              data: year,
+              data: this.years1,
               borderColor: "#3cba9f",
               fill: false
             },
-            { 
+            /* { 
               data: trafficCapacityRatio,
               borderColor: "#ffcc00",
               fill: false
-            },
+            },  */
           ]
         },
         options: {
@@ -76,8 +80,13 @@ export class DashboardsComponent implements OnInit {
             }],
           }
         }
-      });
-    })
+      }); 
+
+     })
+
+
+      
+    
     }
   }
 

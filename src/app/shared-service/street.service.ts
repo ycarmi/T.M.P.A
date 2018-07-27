@@ -17,7 +17,7 @@ export class StreetService {
   private options = new RequestOptions ({headers:this.headers});
   private streetPoints: StreetPoints;
 
-  constructor(private _http:Http, private router:Router) { }
+  constructor(private _http:Http,private _httpp:HttpClient, private router:Router) { }
 
   private data;
   
@@ -34,6 +34,11 @@ export class StreetService {
   clearData()
   {
     this.data=undefined;
+  }
+  getstreets(){
+      return this._httpp.get(this.baseUrl)
+        .map(result => result);
+    
   }
 
   getStreets(){
