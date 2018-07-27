@@ -4,6 +4,7 @@ import { Chart } from 'chart.js';
 import 'rxjs/add/operator/map';
 import { StreetPointsService } from '../shared-service/street-points.service';
 import { StreetPoints } from '../street-points';
+import { stat } from 'fs';
 
 
 @Component({
@@ -13,7 +14,9 @@ import { StreetPoints } from '../street-points';
 })
 export class DashboardsComponent implements OnInit {
   chart= [];
-  years1 =[];
+  allData =[];
+  year = [2000,2001,2002,2003,2004,2005,2006,2007,
+    2008,2009,2010,2011,2012,2013,2014,2015,2016,2017];
   redPoints2   : StreetPoints[] = [];
   orangePoints2 : StreetPoints[] = [];
   yellowPoints2 : StreetPoints[] = [];
@@ -40,31 +43,48 @@ export class DashboardsComponent implements OnInit {
   }
   async subscribe(points){
     points.forEach(element=>{
-      var year= element.statusOverTime;
-       var years= this.years1.push(element);
+       this.allData.push(element);
     
     })
+  }
+  trafficCapacityPerYear(){
+    let yearsSum= [];
+    for(let i = 0;i<18;i++)
+     yearsSum[i] = 0;
+
+    this.allData.forEach(dataPoint =>{
+     let status = dataPoint.statusOverTime;
+     for(let i =0;i<status.length;i++){
+       yearsSum[i] +=status[i].trafficCapacityRatio;
+     }
+
+   })
+   let numberOfPoints = this.allData.length
+   let yearsAverage = [];
+   yearsSum.forEach(year =>{
+     yearsAverage.push(year/numberOfPoints)
+   })
+   yearsAverage = yearsAverage.map(average => average.toFixed(3));
+   return yearsAverage
   }
 
    ngOnInit() {
 /*       this.foo(); 
  */     Promise.all([this.foo()])
-     .then(()=>{
+     .then(()=>{       
+       
+      let yearsAverage = this.trafficCapacityPerYear();
+
       this.chart = new Chart('canvas', {
         type: 'line',
         data: {
-          labels: this.years1,
+          labels: this.year,
           datasets: [
             { 
-              data: this.years1,
+              data: yearsAverage,
               borderColor: "#3cba9f",
               fill: false
             },
-            /* { 
-              data: trafficCapacityRatio,
-              borderColor: "#ffcc00",
-              fill: false
-            },  */
           ]
         },
         options: {
