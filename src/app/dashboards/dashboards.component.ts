@@ -4,7 +4,8 @@ import { Chart } from 'chart.js';
 import 'rxjs/add/operator/map';
 import { StreetPointsService } from '../shared-service/street-points.service';
 import { StreetPoints } from '../street-points';
-import { stat } from 'fs';
+import { element } from '../../../node_modules/protractor';
+
 
 
 @Component({
@@ -16,7 +17,9 @@ export class DashboardsComponent implements OnInit {
   chart= [];
   allData =[];
   numberOfPoints = this.allData.length;
-
+  /* region = ['Yorkshire and The Humbe','East Midlands','London','West Midlands','South West','South East','East of England',
+  'Yorkshire & the Humber','North East','North West','Wales','Merseyside','Scotland']; */
+  region = [];
   year = [2000,2001,2002,2003,2004,2005,2006,2007,
     2008,2009,2010,2011,2012,2013,2014,2015,2016,2017];
   redPoints2   : StreetPoints[] = [];
@@ -39,15 +42,65 @@ export class DashboardsComponent implements OnInit {
   } 
   async subscibeToService() {// insert streets data to a variable  
     let res = await this._streetpointsservice.getStreetPoints();
+    console.log(res)
     this.subscribeToObs(res); 
     this.subscribe(res);
-  }
+  
+    }
   async subscribe(points){
     points.forEach(element=>{
        this.allData.push(element);
     
     })
   }
+  countPointsForRegion(){     
+     let regionsMap= this.region.map(region =>{
+      
+      return {
+        region : region,
+        redCount : 0,
+        yellowCount : 0,
+        orangeCount : 0
+       }
+     })
+    this.redPoints2.forEach(redPoint =>{
+      let region = redPoint.point.region;
+      regionsMap.forEach(regionInMap =>{
+        if(regionInMap.region === region )
+          regionInMap.redCount ++;
+      })
+
+    })
+    this.yellowPoints2.forEach(yellowPoint =>{
+      let region = yellowPoint.point.region;
+      regionsMap.forEach(regionInMap =>{
+        if(regionInMap.region === region )
+          regionInMap.yellowCount ++;
+      })
+    })
+    this.orangePoints2.forEach(orangePoint =>{
+      let region = orangePoint.point.region;
+      regionsMap.forEach(regionInMap =>{
+        if(regionInMap.region === region )
+          regionInMap.orangeCount ++;
+      })
+    })
+    regionsMap.sort( function(a,b){
+      return (b.redCount + b.orangeCount + b.yellowCount) -  (a.redCount+a.orangeCount +a.yellowCount) 
+    });
+    return regionsMap;
+    
+    
+  }
+     getRegions(){
+     let  regions=  new Set();
+     this.allData.forEach(element=> regions.add(element.point.region)); 
+     this.region = Array.from(regions)
+
+    }
+   
+
+
   trafficCapacityPerYear(){
     let yearsSum= [];
    
@@ -74,31 +127,41 @@ export class DashboardsComponent implements OnInit {
    yearsAverage = yearsAverage.map(average => average.toFixed(3));
    return yearsAverage
   }
-  redPointsPercentage(){
+ /*  redPointsPercentage(){
     let redPointsLength = this.redPoints2.length;
-    return((2775/redPointsLength)*100*100);
+    return(2775/redPointsLength);
 
   }
   yellowPointsPercentage(){
     let yellowPointsLength = this.yellowPoints2.length;
-    return (2775/yellowPointsLength)*100*100;
+    return (2775/yellowPointsLength);
 
  
   }
   orangePointsPercentage(){
     let orangePointsLength = this.orangePoints2.length;
-     let orangePercentage = (2775/orangePointsLength)*100*100; 
-    
+     let orangePercentage = (2775/orangePointsLength); 
     return orangePercentage;
-  }
+  } */
    ngOnInit() {
-/*       this.foo(); 
- */    
+
       Promise.all([this.subscibeToService()])
      .then(()=>{       
+       this.getRegions()
+       let regionsMap = this.countPointsForRegion();
        
+       let regions = [];
+       let redCount = [];
+       let orangeCount = [];
+       let yellowCount = [];
+        regionsMap.forEach(entry =>{
+          regions.push(entry.region)
+          redCount.push(entry.redCount)
+          yellowCount.push(entry.yellowCount)
+          orangeCount.push(entry.orangeCount)
+        })
       let yearsAverage = this.trafficCapacityPerYear();
-      let redPercent = this.redPointsPercentage();
+      this.countPointsForRegion()
 
       this.chart = new Chart('canvas', {
         type: 'line',
@@ -133,9 +196,11 @@ export class DashboardsComponent implements OnInit {
            datasets: [
             { 
               data: [
-                this.redPointsPercentage(),
-                this.yellowPointsPercentage(),
-                this.orangePointsPercentage(),
+                this.redPoints2.length,
+                this.yellowPoints2.length,
+                this.orangePoints2.length,
+
+        
               ],
               backgroundColor:[
                 'red','yellow','orange'
@@ -147,6 +212,49 @@ export class DashboardsComponent implements OnInit {
         },
       
       }); 
+      this.chart = new Chart('barChart', {
+        type: 'bar',
+        data: {
+          labels: regions,
+          datasets: [
+            {
+              label: 'Yellow Points Region',
+              data: yellowCount,
+              backgroundColor: "yellow",
+              fill: false,
+              stack: 'Stack 0'
+              
+            }
+           ,{
+              label: 'Orange Points Region',
+              data: orangeCount,
+              backgroundColor: "orange",
+              fill: false,
+              stack: 'Stack 0'
+            }, { 
+              label: 'Red Points Region',
+              data: redCount,
+              backgroundColor: "red",
+              fill: false,
+              stack: 'Stack 0'
+            }
+            
+          ]
+        },
+        options: {
+          legend: {
+            display: false
+          },
+          scales: {
+            xAxes: [{
+              display: true
+            }],
+            yAxes: [{
+              display: true
+            }],
+          }
+        }
+      });
        
 
 
