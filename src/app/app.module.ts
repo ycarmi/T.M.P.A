@@ -29,6 +29,8 @@ import { ErrorPopupComponent } from './error-popup/error-popup.component';
 import { MatDialogModule} from "@angular/material";
 import { BrowserAnimationsModule} from "@angular/platform-browser/animations";
 import { DashboardsComponent } from './dashboards/dashboards.component';
+import { AdminDashboardsComponent } from './admin-dashboards/admin-dashboards.component';
+import { ManagerDashboardsComponent } from './manager-dashboards/manager-dashboards.component';
 
 
 
@@ -41,7 +43,10 @@ const appRoutes: Routes =[
   {path: 'users', component: UsersComponent},
   {path: 'op', component: UserCreationComponent},
   {path: 'esri-map', component: EsriMapComponent},
-  {path: 'dashboards', component: DashboardsComponent}
+  {path: 'dashboards', component: DashboardsComponent}, 
+  {path: 'admin-dashboards', component: AdminDashboardsComponent},
+  {path: 'manager-dashboards', component:ManagerDashboardsComponent}
+
 
 
 ]
@@ -65,6 +70,8 @@ const appRoutes: Routes =[
     StreetCreationComponent,
     ErrorPopupComponent,
     DashboardsComponent,
+    AdminDashboardsComponent,
+    ManagerDashboardsComponent,
   ],
   imports: [
     BrowserModule,
