@@ -1,23 +1,22 @@
 
-        <div style=" border: 2px solid red;
-        border-radius: 5px "[hidden] ="!chart">
+        <div [hidden] ="!chart">
             <canvas id="canvas">{{ chart }}</canvas>
-          </div> 
-           
-              <div  [hidden] ="!chart">
+          </div>
+     
+          <div class= "inline" [hidden] ="!chart">
+                <canvas id="pieChart2017">{{ chart }}</canvas>
+            </div>
+            <div class= "inline" [hidden] ="!chart">
+                <canvas id="pieChart2016">{{ chart }}</canvas>
+            </div>
+              <div class= "inline" [hidden] ="!chart">
                 <canvas id="barChart">{{ chart }}</canvas>
             </div>  
-            <div  [hidden] ="!chart">
+            <div class= "inline" [hidden] ="!chart">
                 <canvas id="categoryBarChart">{{ chart }}</canvas>
             </div>
-         
-      
-          <div [hidden] ="!chart">
-              <canvas id="pieChart2017">{{ chart }}</canvas>
-          </div>
-          <div [hidden] ="!chart">
-              <canvas id="pieChart2016">{{ chart }}</canvas>
-          </div> 
+     
+           
 
      
 

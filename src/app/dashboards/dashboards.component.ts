@@ -240,7 +240,7 @@ export class DashboardsComponent implements OnInit {
         options: {
           title: {
 						display: true,
-						text: 'Traffic Capacity For Years'
+						text: 'Traffic Capacity Average For Years'
 					},
           legend: {
             display: false

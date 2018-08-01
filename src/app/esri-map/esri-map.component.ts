@@ -359,13 +359,13 @@ getLayer(title,graphics,renderer ){// add API layers
         const searchWidget = new Search({
           view: mapView
         });    
-        mapView.ui.add(searchWidget,'top-right'); 
+         
         this.foo().then(() =>{   
         Promise.all([this.fillinTheGraphics()])
                .then(() =>{
-                let redLayer = new FeatureLayer(this.getLayer("redLayer",this.redGraphics,this.redRenderer));
-                let orangeLayer = new FeatureLayer(this.getLayer("orangeLayer",this.orangeGraphics,this.orangeRenderer));
-                let yellowLayer = new FeatureLayer(this.getLayer("yellowLayer",this.yellowGraphics,this.yellowRenderer));
+                let redLayer = new FeatureLayer(this.getLayer("Red Points",this.redGraphics,this.redRenderer));
+                let orangeLayer = new FeatureLayer(this.getLayer("Orange Points",this.orangeGraphics,this.orangeRenderer));
+                let yellowLayer = new FeatureLayer(this.getLayer("Yellow Points",this.yellowGraphics,this.yellowRenderer));
                 map.addMany([redLayer,orangeLayer,yellowLayer]);      
                 /* var createChart = function(data){
                   console.log("Hey!!!")
@@ -375,7 +375,8 @@ getLayer(title,graphics,renderer ){// add API layers
  */                let layerList = new LayerList({
                   view: mapView
                 });
-                mapView.ui.add(layerList, "bottom-right");
+                mapView.ui.add(layerList, "top-right");
+                mapView.ui.add(searchWidget,'top-right');
                 mapView.when(() => {
                  this.mapLoaded.emit(true);
                })

@@ -2,8 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import {User} from '../user';
 import {Router} from '@angular/router';
 import {UserService} from '../shared-service/user.service';
-import { IfStmt } from '@angular/compiler';
-import { DatePipe } from '@angular/common';
+
 @Component({
   selector: 'app-user-creation',
   templateUrl: './user-creation.component.html',
