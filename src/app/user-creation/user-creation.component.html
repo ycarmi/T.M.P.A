@@ -1,7 +1,36 @@
 <app-navigation-bar-admin></app-navigation-bar-admin>
 <!--User creation form -->
+<body>
 <form (ngSubmit)= "ProcessForm()" class="view">
-    <p style="color:white" class="h5 text-center mb-4">Create / Update User</p>
+        <p style="color:black" class="h5 text-center mb-4">Create / Update User</p>
+        <div class="md-form">
+                <i class="fa fa-envelope prefix grey-text"></i>
+                <input type="text" id="defaultForm-pass" name="name" class="form-control" [(ngModel)]="user.name" mdbActive>
+                <label for="defaultForm-pass">Your User Name</label>
+            </div>
+            <div class="md-form">
+                <i class="fa fa-lock prefix grey-text"></i>
+                <input type="text" id="defaultForm-pass" name="password" class="form-control"  [(ngModel)]="user.password" mdbActive>
+                <label for="defaultForm-pass">Your Password</label>
+            </div>
+            <!--/Form Fields-->
+            <!--Checkbox butons-->
+            <div  class="text-center" data-toggle="buttons">
+            <label class="btn btn-default active form-check-label">
+                <input class="form-check-input" type="radio" name="UserType" value="Admin" autocomplete="off"  [(ngModel)]="user.type"> ADMIN 
+            </label>
+            <label class="btn btn-default active form-check-label">
+                <input class="form-check-input" type="radio" name="UserType" value="Manger" autocomplete="off" [(ngModel)]="user.type" > PROGRAM MANGER
+                </label>
+            </div>
+            <!--/Checkbox butons-->
+        <div class="text-center">
+            <input  type="submit" value="Save" class="btn btn-default waves-light" mdbRippleRadius>
+            
+        </div>
+
+
+    <!-- <p style="color:white" class="h5 text-center mb-4">Create / Update User</p>
     <br>
     <br>
     <div class="md-form">
@@ -14,11 +43,6 @@
         <input type="text" id="defaultForm-pass" name="password" class="form-control" [(ngModel)]="user.password" mdbActive>
         <label for="defaultForm-pass">Password</label>
     </div>
-    <!-- <div class="md-form">
-        <i class="fa fa-id-card prefix grey-text"></i>
-        <input type="text" id="defaultForm-pass" name="type" class="form-control" [(ngModel)]="user.type" mdbActive>
-        <label for="defaultForm-pass">User Type</label>
-    </div> -->
     <div class="btn-group " data-toggle="buttons">
             <label style="opacity: 0.8; filter: alpha(opacity=60); " class="btn btn-default active form-check-label btn btn-deep-orange waves-light" mdbRippleRadius>
                 <input class="form-check-input" type="radio" name="UserType" value="Admin" [(ngModel)]="user.type" autocomplete="off" > ADMIN 
@@ -29,8 +53,9 @@
             </div>    
 <div class="text-center">
     <input  type="submit" value="Save" class="btn btn-deep-orange waves-light" mdbRippleRadius>
-</div>
+</div> -->
 </form>
+</body>
 <!--/User creation form -->
 
  

@@ -27,7 +27,7 @@ export class StreetsComponent implements OnInit {
     let longitude=street.point.longitude;
     let data = [longitude,latitude];
     this._streetService.setData(data)
-    this._router.navigate(['/esri-map']);
+    this._router.navigate(['/admin']);
 
   }
   ngOnInit(): void {//adding the data that we got from the data-base to the table -

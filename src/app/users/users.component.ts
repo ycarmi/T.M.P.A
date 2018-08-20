@@ -3,7 +3,6 @@ import { Router } from '@angular/router';
 import { UserService} from '../shared-service/user.service';
 import { User} from '../user';
 import { DataTablesModule } from 'angular-datatables';
-
 import { Http, Response } from '@angular/http';
 import { Subject } from 'rxjs/Subject';
 
@@ -36,6 +35,10 @@ export class UsersComponent implements OnInit {
       console.log("in Users : ");
       console.log(user);
     this._userService.deleteUsers(user).subscribe((user)=>{
+      this._userService.getUsers().subscribe(data=>{
+        this.users = data;
+      })
+
       console.log("in Users : ");
       console.log(user);
       this.users.splice(this.users.indexOf(user),1);

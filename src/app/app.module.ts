@@ -45,7 +45,9 @@ const appRoutes: Routes =[
   {path: 'esri-map', component: EsriMapComponent},
   {path: 'dashboards', component: DashboardsComponent}, 
   {path: 'admin-dashboards', component: AdminDashboardsComponent},
-  {path: 'manager-dashboards', component:ManagerDashboardsComponent}
+  {path: 'manager-dashboards', component:ManagerDashboardsComponent},
+  {path: 'homepage', component: HomepageComponent}
+
 
 
 
